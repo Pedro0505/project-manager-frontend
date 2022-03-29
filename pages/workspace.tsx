@@ -6,22 +6,24 @@ import { getToken } from '../helpers';
 import { IWorkspace, IWorkspaceResponse } from '../interfaces';
 
 const Workspace: NextPage = () => {
-  const [workspaces, setWorkspaces] = useState<IWorkspace[]>([{ name: '', id: 0, ownerId: 0 }]);
-  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace`;
+  const [workspaces, setWorkspaces] = useState<IWorkspace[]>([]);
 
   useEffect(() => {
     console.log('Fetching workspaces');
 
     const getWorkspaces = async () => {
+      const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace`;
+
       const { data } = await axios.get<IWorkspaceResponse, AxiosResponse<IWorkspaceResponse>>(
         endpoint,
         { headers: { Authorization: getToken() } }
       );
+
       setWorkspaces(data.data);
     };
 
     getWorkspaces();
-  }, [endpoint]);
+  }, []);
 
   return (
     <div>

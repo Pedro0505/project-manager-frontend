@@ -1,12 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
-import type { NextPage } from 'next';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { storeToken } from '../helpers';
-import { ILoginRequest, ILoginResponse } from '../interfaces/LoginUser';
+import { ILoginRequest, ILoginResponse } from '../interfaces';
 
-const Login: NextPage = () => {
+function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
@@ -27,34 +25,30 @@ const Login: NextPage = () => {
       storeToken(response.data.token);
       router.push('/workspace');
     } catch (error) {
-      console.error(error);
+      if (axios.isAxiosError(error)) {
+        // transfomar os erros em retorno para o usuário
+        console.error(error.response);
+      }
     }
   };
 
   return (
-    <div>
-      <Head>
-        <title>Project Manager | Login</title>
-      </Head>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          name="email"
-          value={email}
-          onChange={({ target }) => setEmail(target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          name="password"
-          value={password}
-          onChange={({ target }) => setPassword(target.value)}
-        />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={({ target }) => setEmail(target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={({ target }) => setPassword(target.value)}
+      />
+      <button type="submit">Login</button>
+    </form>
   );
-};
+}
 
 export default Login;
