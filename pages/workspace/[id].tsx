@@ -40,7 +40,11 @@ function WorkspaceId() {
   return (
     <div>
       <Head>
-        <title>Workspace {workspace?.name || ''}</title>
+        <title>
+          Workspace
+          {' '}
+          {workspace?.name || ''}
+        </title>
       </Head>
       <main>
         {workspace?.name}

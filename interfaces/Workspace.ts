@@ -16,4 +16,3 @@ export interface IWorkspaceResponse {
 export interface IWorkspaceIdResponse {
   data: IWorkspaceId;
 }
-

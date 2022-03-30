@@ -12,8 +12,8 @@ function Column({ title, cards }: IColumnComponent) {
     <div>
       <h2>{title}</h2>
       <div>
-        {cards.map(({ title, id, content }) => (
-          <Card key={`${title}-${id}-${content}`} content={content} />
+        {cards.map(({ title: cardTitle, id, content }) => (
+          <Card key={`${cardTitle}-${id}-${content}`} content={content} />
         ))}
       </div>
     </div>

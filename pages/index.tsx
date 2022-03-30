@@ -4,7 +4,7 @@ import Login from '../components/Login';
 import Register from '../components/Register';
 import styles from '../styles/Home.module.css';
 
-const Home: NextPage = () => {
+function Home() {
   return (
     <div className={styles.container}>
       <Head>
@@ -19,6 +19,6 @@ const Home: NextPage = () => {
       </main>
     </div>
   );
-};
+}
 
-export default Home;
+export default Home as NextPage;

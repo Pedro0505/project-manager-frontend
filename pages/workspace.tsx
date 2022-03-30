@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { getToken } from '../helpers';
 import { IWorkspace, IWorkspaceResponse } from '../interfaces';
 
-const Workspace: NextPage = () => {
+function Workspace() {
   const [workspaces, setWorkspaces] = useState<IWorkspace[]>([]);
   const router = useRouter();
 
@@ -20,7 +20,7 @@ const Workspace: NextPage = () => {
       try {
         const { data } = await axios.get<IWorkspaceResponse, AxiosResponse<IWorkspaceResponse>>(
           endpoint,
-          { headers: { Authorization: getToken() as string } }
+          { headers: { Authorization: getToken() as string } },
         );
 
         setWorkspaces(data.data);
@@ -48,6 +48,6 @@ const Workspace: NextPage = () => {
       </main>
     </div>
   );
-};
+}
 
-export default Workspace;
+export default Workspace as NextPage;
