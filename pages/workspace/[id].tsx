@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import Column from '../../components/Column';
 import { getToken } from '../../helpers';
 import { IColumn, IWorkspace, IWorkspaceIdResponse } from '../../interfaces';
 
@@ -44,15 +45,7 @@ function WorkspaceId() {
       <main>
         {workspace?.name}
         {columns.map(({ title, id, cards }) => (
-          <div key={`${title}-${id}`}>
-            <span>{title}</span>
-            {cards.map(({ title, content, id }) => (
-              <div key={`${title}-${id}-${content}`}>
-                <span>{title}</span>
-                <span>{content}</span>
-              </div>
-            ))}
-          </div>
+          <Column key={`${title}-${id}`} cards={cards} title={title} />
         ))}
       </main>
     </div>
