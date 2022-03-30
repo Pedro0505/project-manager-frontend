@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getToken } from '../helpers';
 import { IWorkspace, IWorkspaceResponse } from '../interfaces';
@@ -32,7 +33,9 @@ const Workspace: NextPage = () => {
       </Head>
       <main>
         {workspaces.map(({ name, id }) => (
-          <div key={`${name}-${id}`}>{name}</div>
+          <Link href={`/workspace/${id}`} key={`${name}-${id}`}>
+            <a>{name}</a>
+          </Link>
         ))}
       </main>
     </div>
