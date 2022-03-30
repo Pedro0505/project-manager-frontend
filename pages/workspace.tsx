@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import styles from '../styles/workspace.module.css'
 import { useEffect, useState } from 'react';
 import { getToken } from '../helpers';
 import { IWorkspace, IWorkspaceResponse } from '../interfaces';
@@ -27,14 +28,14 @@ const Workspace: NextPage = () => {
   }, []);
 
   return (
-    <div>
+    <div className={ styles.mainContainerWorkspace }>
       <Head>
         <title>Project Manager | Workspace</title>
       </Head>
-      <main>
+      <main className={ styles.containerCardWorkspace }>
         {workspaces.map(({ name, id }) => (
           <Link href={`/workspace/${id}`} key={`${name}-${id}`}>
-            <a>{name}</a>
+            <a className={ styles.cardWorkspace }>{name}</a>
           </Link>
         ))}
       </main>
