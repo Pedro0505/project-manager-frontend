@@ -2,12 +2,14 @@ import axios, { AxiosResponse } from 'axios';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { getToken } from '../helpers';
 import { IWorkspace, IWorkspaceResponse } from '../interfaces';
 
 const Workspace: NextPage = () => {
   const [workspaces, setWorkspaces] = useState<IWorkspace[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     console.log('Fetching workspaces');
@@ -15,16 +17,22 @@ const Workspace: NextPage = () => {
     const getWorkspaces = async () => {
       const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace`;
 
-      const { data } = await axios.get<IWorkspaceResponse, AxiosResponse<IWorkspaceResponse>>(
-        endpoint,
-        { headers: { Authorization: getToken() } }
-      );
+      try {
+        const { data } = await axios.get<IWorkspaceResponse, AxiosResponse<IWorkspaceResponse>>(
+          endpoint,
+          { headers: { Authorization: getToken() as string } }
+        );
 
-      setWorkspaces(data.data);
+        setWorkspaces(data.data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          router.push('/');
+        }
+      }
     };
 
     getWorkspaces();
-  }, []);
+  }, [router]);
 
   return (
     <div>

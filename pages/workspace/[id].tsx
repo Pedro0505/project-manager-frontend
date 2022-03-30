@@ -17,18 +17,24 @@ function WorkspaceId() {
     const getWorkspaces = async () => {
       const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace/${router.query.id}`;
 
-      const {
-        data: { data },
-      } = await axios.get<IWorkspaceIdResponse, AxiosResponse<IWorkspaceIdResponse>>(endpoint, {
-        headers: { Authorization: getToken() },
-      });
+      try {
+        const {
+          data: { data },
+        } = await axios.get<IWorkspaceIdResponse, AxiosResponse<IWorkspaceIdResponse>>(endpoint, {
+          headers: { Authorization: getToken() as string },
+        });
 
-      setWorkspace({ id: data.id, name: data.name, ownerId: data.ownerId });
-      setColumns(data.columns);
+        setWorkspace({ id: data.id, name: data.name, ownerId: data.ownerId });
+        setColumns(data.columns);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          router.push('/workspace');
+        }
+      }
     };
 
     if (router.query.id) getWorkspaces();
-  }, [router.query.id]);
+  }, [router]);
 
   return (
     <div>
