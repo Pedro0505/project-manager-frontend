@@ -2,8 +2,14 @@ import axios, { AxiosResponse } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { MdModeEditOutline } from 'react-icons/md';
 import { getToken } from '../helpers';
-import { ICard, IColumnUpdateRequest } from '../interfaces';
+import {
+  ICard,
+  ICardCreateRequest,
+  ICardCreateResponse,
+  IColumnUpdateRequest,
+} from '../interfaces';
 import Card from './Card';
+import CardCreate from './CardCreate';
 
 interface IColumnComponent {
   id: number;
@@ -13,8 +19,10 @@ interface IColumnComponent {
 
 function Column({ id, title, cards }: IColumnComponent) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isCreatingCard, setIsCreatingCard] = useState<boolean>(false);
   const [columnTitleBackup, setColumnTitleBackup] = useState<string>(title);
   const [columnTitleEditing, setColumnTitleEditing] = useState<string>(title);
+  const [cardList, setCardList] = useState<ICard[]>(cards);
 
   useEffect(() => {
     setColumnTitleEditing(columnTitleBackup);
@@ -42,6 +50,25 @@ function Column({ id, title, cards }: IColumnComponent) {
     setIsEditing(false);
   };
 
+  const createCard = async (cardContent: string) => {
+    if (cardContent === '') return;
+    setIsCreatingCard(false);
+    const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/card`;
+    const newCard: ICardCreateRequest = { columnId: id, content: cardContent };
+
+    try {
+      const { data } = await axios.post<
+        ICardCreateResponse,
+        AxiosResponse<ICardCreateResponse>,
+        ICardCreateRequest
+      >(endpoint, newCard, { headers: { Authorization: getToken() as string } });
+
+      setCardList((prev) => [...prev, data.data]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <section>
       <div>
@@ -60,11 +87,17 @@ function Column({ id, title, cards }: IColumnComponent) {
         </button>
       </div>
       <div>
-        {cards.map(({ title: cardTitle, id: cardId, content }) => (
+        {cardList.map(({ title: cardTitle, id: cardId, content }) => (
           <Card key={`${cardTitle}-${cardId}-${content}`} content={content} />
         ))}
       </div>
-      {/* <button type="button">Adicionar card</button> */}
+      {isCreatingCard ? (
+        <CardCreate createCard={createCard} setIsCreatingCard={setIsCreatingCard} />
+      ) : (
+        <button type="button" onMouseDown={() => setIsCreatingCard(true)}>
+          Adicionar card
+        </button>
+      )}
     </section>
   );
 }

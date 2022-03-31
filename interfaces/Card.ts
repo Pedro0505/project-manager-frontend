@@ -1,6 +1,13 @@
-export interface ICard {
-  id: number;
+export interface ICardCreateRequest {
   content: string;
-  title: string;
+  title?: string;
   columnId: number;
+}
+
+export interface ICard extends ICardCreateRequest {
+  id: number;
+}
+
+export interface ICardCreateResponse {
+  data: ICard;
 }
