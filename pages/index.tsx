@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Login from '../components/Login';
 import Register from '../components/Register';
 
-const Home: NextPage = () => {
+function Home() {
   return (
     <div>
       <Head>
@@ -19,6 +19,6 @@ const Home: NextPage = () => {
       </main>
     </div>
   );
-};
+}
 
-export default Home;
+export default Home as NextPage;

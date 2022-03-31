@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import Column from '../../components/Column';
 import { getToken } from '../../helpers';
 import { IColumn, IWorkspace, IWorkspaceIdResponse } from '../../interfaces';
 
@@ -17,36 +18,38 @@ function WorkspaceId() {
     const getWorkspaces = async () => {
       const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace/${router.query.id}`;
 
-      const {
-        data: { data },
-      } = await axios.get<IWorkspaceIdResponse, AxiosResponse<IWorkspaceIdResponse>>(endpoint, {
-        headers: { Authorization: getToken() },
-      });
+      try {
+        const {
+          data: { data },
+        } = await axios.get<IWorkspaceIdResponse, AxiosResponse<IWorkspaceIdResponse>>(endpoint, {
+          headers: { Authorization: getToken() as string },
+        });
 
-      setWorkspace({ id: data.id, name: data.name, ownerId: data.ownerId });
-      setColumns(data.columns);
+        setWorkspace({ id: data.id, name: data.name, ownerId: data.ownerId });
+        setColumns(data.columns);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          router.push('/workspace');
+        }
+      }
     };
 
     if (router.query.id) getWorkspaces();
-  }, [router.query.id]);
+  }, [router]);
 
   return (
     <div>
       <Head>
-        <title>Workspace {workspace?.name || ''}</title>
+        <title>
+          Workspace
+          {' '}
+          {workspace?.name || ''}
+        </title>
       </Head>
       <main>
         {workspace?.name}
         {columns.map(({ title, id, cards }) => (
-          <div key={`${title}-${id}`}>
-            <span>{title}</span>
-            {cards.map(({ title, content, id }) => (
-              <div key={`${title}-${id}-${content}`}>
-                <span>{title}</span>
-                <span>{content}</span>
-              </div>
-            ))}
-          </div>
+          <Column key={`${title}-${id}`} cards={cards} id={id} title={title} />
         ))}
       </main>
     </div>
