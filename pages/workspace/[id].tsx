@@ -49,7 +49,7 @@ function WorkspaceId() {
       <main>
         {workspace?.name}
         {columns.map(({ title, id, cards }) => (
-          <Column key={`${title}-${id}`} cards={cards} title={title} />
+          <Column key={`${title}-${id}`} cards={cards} id={id} title={title} />
         ))}
       </main>
     </div>
