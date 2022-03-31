@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdModeEditOutline } from 'react-icons/md';
 import { getToken } from '../helpers';
 import { ICard, IColumnUpdateRequest } from '../interfaces';
@@ -15,6 +15,10 @@ function Column({ id, title, cards }: IColumnComponent) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [columnTitleBackup, setColumnTitleBackup] = useState<string>(title);
   const [columnTitleEditing, setColumnTitleEditing] = useState<string>(title);
+
+  useEffect(() => {
+    setColumnTitleEditing(columnTitleBackup);
+  }, [columnTitleBackup]);
 
   const editTitle = async () => {
     if (isEditing) {
