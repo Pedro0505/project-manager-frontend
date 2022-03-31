@@ -55,3 +55,14 @@
   color: white;
   border-radius: 5px;
 }
+
+.errorMessage {
+  display: flex;
+  color: red;
+  margin-top: 10px;
+}
+
+.warnigPlate {
+  color: rgb(121, 121, 67);
+  margin-right: 7px;
+}
