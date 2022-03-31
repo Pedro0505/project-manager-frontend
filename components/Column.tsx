@@ -13,7 +13,8 @@ interface IColumnComponent {
 
 function Column({ id, title, cards }: IColumnComponent) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [columnTitle, setColumnTitle] = useState<string>(title);
+  const [columnTitleBackup, setColumnTitleBackup] = useState<string>(title);
+  const [columnTitleEditing, setColumnTitleEditing] = useState<string>(title);
 
   const editTitle = async () => {
     if (isEditing) {
@@ -21,14 +22,20 @@ function Column({ id, title, cards }: IColumnComponent) {
 
       await axios.put<null, AxiosResponse<null>, IColumnUpdateRequest>(
         endpoint,
-        { title: columnTitle },
+        { title: columnTitleEditing },
         { headers: { Authorization: getToken() as string } },
       );
 
+      setColumnTitleBackup(columnTitleEditing);
       setIsEditing(false);
     } else {
       setIsEditing(true);
     }
+  };
+
+  const cancelEditTitle = () => {
+    setColumnTitleEditing(columnTitleBackup);
+    setIsEditing(false);
   };
 
   return (
@@ -37,13 +44,14 @@ function Column({ id, title, cards }: IColumnComponent) {
         {isEditing ? (
           <input
             type="text"
-            value={columnTitle}
-            onChange={({ target }) => setColumnTitle(target.value)}
+            value={columnTitleEditing}
+            onChange={({ target }) => setColumnTitleEditing(target.value)}
+            onBlur={cancelEditTitle}
           />
         ) : (
-          <h2>{columnTitle}</h2>
+          <h2>{columnTitleEditing}</h2>
         )}
-        <button type="button" aria-label="editar nome da coluna" onClick={editTitle}>
+        <button type="button" aria-label="editar nome da coluna" onMouseDown={editTitle}>
           <MdModeEditOutline />
         </button>
       </div>
