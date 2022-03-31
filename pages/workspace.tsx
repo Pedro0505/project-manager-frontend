@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import styles from '../styles/workspace.module.css'
 import { getToken } from '../helpers';
 import { IWorkspace, IWorkspaceResponse } from '../interfaces';
 
@@ -35,14 +36,14 @@ function Workspace() {
   }, [router]);
 
   return (
-    <div>
+    <div className={ styles.mainContainerWorkspace }>
       <Head>
         <title>Project Manager | Workspace</title>
       </Head>
-      <main>
+      <main className={ styles.containerCardWorkspace }>
         {workspaces.map(({ name, id }) => (
           <Link href={`/workspace/${id}`} key={`${name}-${id}`}>
-            <a>{name}</a>
+            <a className={ styles.cardWorkspace }>{name}</a>
           </Link>
         ))}
       </main>
