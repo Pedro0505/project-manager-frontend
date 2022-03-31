@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { storeToken } from '../helpers';
-import styles from '../styles/login.module.css'
+import styles from '../styles/login.module.css';
 import { IRegisterUserRequest, IRegisterUserResponse } from '../interfaces';
 
 function Register() {
@@ -41,18 +41,18 @@ function Register() {
         <label htmlFor="firstNameRegister">
           Nome
           <input
-              id="firstNameRegister"
-              type="text"
-              className={ styles.inputName }
-              placeholder="Nome"
-              name="firstName"
-              value={firstName}
-              onChange={({ target }) => setFirstName(target.value)}
-            />
+            id="firstNameRegister"
+            type="text"
+            className={ styles.inputName }
+            placeholder="Nome"
+            name="firstName"
+            value={firstName}
+            onChange={({ target }) => setFirstName(target.value)}
+          />
         </label>
-      <label htmlFor="lastNameRegister">
-        Sobrenome
-        <input
+        <label htmlFor="lastNameRegister">
+          Sobrenome
+          <input
             type="text"
             placeholder="Sobrenome"
             name="lastNameRegister"
@@ -60,7 +60,7 @@ function Register() {
             value={lastName}
             onChange={({ target }) => setLastName(target.value)}
           />
-      </label>
+        </label>
       </div>
       <label htmlFor="emailRegister">
         Email

@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { storeToken } from '../helpers';
-import styles from '../styles/login.module.css'
+import styles from '../styles/login.module.css';
 import { ILoginRequest, ILoginResponse } from '../interfaces';
 
 function Login() {

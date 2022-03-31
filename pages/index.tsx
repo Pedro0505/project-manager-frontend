@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
-import styles from '../styles/login.module.css'
 import Head from 'next/head';
+import styles from '../styles/login.module.css';
 import Login from '../components/Login';
 import Register from '../components/Register';
 

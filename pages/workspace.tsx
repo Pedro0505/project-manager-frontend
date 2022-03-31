@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import styles from '../styles/workspace.module.css'
+import styles from '../styles/workspace.module.css';
 import { getToken } from '../helpers';
 import { IWorkspace, IWorkspaceResponse } from '../interfaces';
 
