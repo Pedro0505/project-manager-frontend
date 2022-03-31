@@ -1,0 +1,57 @@
+.formRegister {
+  display: flex;
+  flex-direction: column;
+  padding: 150px 50px 150px 0;
+  border-right: 1px solid rgb(186, 186, 186);
+}
+
+.formLogin {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 50px;
+  padding-bottom: 100px;
+}
+
+.nameField {
+  display: flex;
+  flex-direction: row;
+}
+
+.nameField label input,
+.formRegister label input,
+.formLogin label input {
+  padding: 10px;
+  border: 2px solid rgb(186, 186, 186);
+  border-radius: 5px;
+}
+
+.formLogin label,
+.formRegister label {
+  display: flex;
+  margin-top: 40px;
+  flex-direction: column;
+}
+
+.containerRegiterLogin {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.inputName {
+  margin-right: 30px;
+}
+
+.registerBtn, .loginBtn {
+  margin-top: 20px;
+  padding: 12px;
+  width: 120px;
+  cursor: pointer;
+  background-color: #1AAE9F;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}

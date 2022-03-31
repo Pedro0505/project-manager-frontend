@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { storeToken } from '../helpers';
+import styles from '../styles/login.module.css'
 import { IRegisterUserRequest, IRegisterUserResponse } from '../interfaces';
 
 function Register() {
@@ -35,36 +36,55 @@ function Register() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Nome"
-        name="firstName"
-        value={firstName}
-        onChange={({ target }) => setFirstName(target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Sobrenome"
-        name="lastName"
-        value={lastName}
-        onChange={({ target }) => setLastName(target.value)}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        name="email"
-        value={email}
-        onChange={({ target }) => setEmail(target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        name="password"
-        value={password}
-        onChange={({ target }) => setPassword(target.value)}
-      />
-      <button type="submit">Register</button>
+    <form onSubmit={handleSubmit} className={ styles.formRegister }>
+      <div className={ styles.nameField }>
+        <label htmlFor="firstNameRegister">
+          Nome
+          <input
+              id="firstNameRegister"
+              type="text"
+              className={ styles.inputName }
+              placeholder="Nome"
+              name="firstName"
+              value={firstName}
+              onChange={({ target }) => setFirstName(target.value)}
+            />
+        </label>
+      <label htmlFor="lastNameRegister">
+        Sobrenome
+        <input
+            type="text"
+            placeholder="Sobrenome"
+            name="lastNameRegister"
+            id="lastName"
+            value={lastName}
+            onChange={({ target }) => setLastName(target.value)}
+          />
+      </label>
+      </div>
+      <label htmlFor="emailRegister">
+        Email
+        <input
+          type="email"
+          placeholder="Email"
+          name="email"
+          id="emailRegister"
+          value={email}
+          onChange={({ target }) => setEmail(target.value)}
+        />
+      </label>
+      <label htmlFor="passwordRegister">
+        Password
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          id="passwordRegister"
+          value={password}
+          onChange={({ target }) => setPassword(target.value)}
+        />
+      </label>
+      <button type="submit" className={ styles.registerBtn }>Register</button>
     </form>
   );
 }

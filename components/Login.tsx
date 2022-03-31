@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { storeToken } from '../helpers';
+import styles from '../styles/login.module.css'
 import { ILoginRequest, ILoginResponse } from '../interfaces';
 
 function Login() {
@@ -33,20 +34,28 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={({ target }) => setEmail(target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={({ target }) => setPassword(target.value)}
-      />
-      <button type="submit">Login</button>
+    <form onSubmit={handleSubmit} className={ styles.formLogin }>
+      <label htmlFor="emailLogin">
+        Email
+        <input
+          type="email"
+          placeholder="Email"
+          id="emailLogin"
+          value={email}
+          onChange={({ target }) => setEmail(target.value)}
+        />
+      </label>
+      <label htmlFor="passwordLogin">
+        Password
+        <input
+          type="password"
+          placeholder="Password"
+          id="passwordLogin"
+          value={password}
+          onChange={({ target }) => setPassword(target.value)}
+        />
+      </label>
+      <button className={ styles.loginBtn } type="submit">Login</button>
     </form>
   );
 }
