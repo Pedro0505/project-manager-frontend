@@ -8,6 +8,7 @@ interface ICardCreateComponent {
 
 function CardCreate({ createCard, setIsCreatingCard }: ICardCreateComponent) {
   const [content, setContent] = useState<string>('');
+  const maxLength = 190;
 
   const handleCancel = () => {
     setIsCreatingCard(false);
@@ -21,6 +22,7 @@ function CardCreate({ createCard, setIsCreatingCard }: ICardCreateComponent) {
         onChange={({ target }) => setContent(target.value)}
         onBlur={() => createCard(content)}
       />
+      <p>{ maxLength - content.length }</p>
       <div>
         <button type="button" onMouseDown={() => createCard(content)}>
           Adicionar card

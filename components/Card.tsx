@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
+import { TiInfoOutline } from 'react-icons/ti';
 import { getToken } from '../helpers';
 import { ICard } from '../interfaces';
 
@@ -12,14 +13,21 @@ interface ICardComponent {
 }
 
 function Card({ content, cardId, setCardList, cardList }: ICardComponent) {
+  const [confirmDelete, setConfirmDelete] = useState(true);
+
   const deleteCard = async () => {
-    const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/card/${cardId}`;
+    if (!confirmDelete) {
+      const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/card/${cardId}`;
 
-    await axios.delete(endpoint, { headers: { Authorization: getToken() as string } });
+      await axios.delete(endpoint, { headers: { Authorization: getToken() as string } });
 
-    const filtered = cardList.filter(({ id }) => cardId !== id);
+      const filtered = cardList.filter(({ id }) => cardId !== id);
 
-    setCardList(filtered);
+      setCardList(filtered);
+    }
+
+    setConfirmDelete(false);
+    setTimeout(() => setConfirmDelete(true), 5000);
   };
 
   return (
@@ -29,7 +37,7 @@ function Card({ content, cardId, setCardList, cardList }: ICardComponent) {
         type="button"
         onClick={ deleteCard }
       >
-        <FaTrash />
+        { confirmDelete ? <FaTrash /> : <TiInfoOutline title="Ao clicar você estará excluindo permanentemente esse card" /> }
       </button>
     </>
   );
