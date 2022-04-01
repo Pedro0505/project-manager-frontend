@@ -42,7 +42,6 @@ function WorkspaceId() {
       <Head>
         <title>
           Workspace
-          {' '}
           {workspace?.name || ''}
         </title>
       </Head>

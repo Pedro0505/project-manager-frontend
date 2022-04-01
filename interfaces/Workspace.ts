@@ -16,3 +16,10 @@ export interface IWorkspaceResponse {
 export interface IWorkspaceIdResponse {
   data: IWorkspaceId;
 }
+
+export interface IWorkspaceCreate {
+  data: {
+    workspaceName: string;
+    id: number;
+  }
+}

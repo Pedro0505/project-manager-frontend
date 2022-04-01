@@ -2,14 +2,19 @@ import axios, { AxiosResponse } from 'axios';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import jwtDecode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styles from '../styles/workspace.module.css';
 import { getToken } from '../helpers';
-import { IWorkspace, IWorkspaceResponse } from '../interfaces';
+import { IWorkspace, IWorkspaceCreate, IWorkspaceResponse } from '../interfaces';
+import { ITokenData } from '../interfaces/Jwt';
 
 function Workspace() {
   const [workspaces, setWorkspaces] = useState<IWorkspace[]>([]);
+  const [isCreate, setIsCreate] = useState<boolean>(false);
+  const [limitCreate, setLimitCreate] = useState<boolean>(false);
+  const [workspaceName, setWorkspaceName] = useState<string>('');
   const router = useRouter();
 
   useEffect(() => {
@@ -35,19 +40,64 @@ function Workspace() {
     getWorkspaces();
   }, [router]);
 
+  useEffect(() => {
+    if (workspaces.length === 3) {
+      setLimitCreate(true);
+    }
+  }, [workspaces]);
+
+  const createWorkspace = async () => {
+    const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace`;
+    const token = getToken() as string;
+    const decoded = jwtDecode<ITokenData>(token);
+    const newWorkspace = { workspaceName, userId: decoded.tokenData.userId };
+
+    try {
+      if (!limitCreate) {
+        const { data } = await axios.post<IWorkspaceCreate, AxiosResponse<IWorkspaceCreate>>(
+          endpoint,
+          newWorkspace,
+          { headers: { Authorization: token } },
+        );
+
+        const created = {
+          name: data.data.workspaceName,
+          id: data.data.id,
+          ownerId: decoded.tokenData.userId,
+        };
+
+        setWorkspaces((prev) => [...prev, created]);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+      }
+    }
+  };
+
   return (
-    <div className={ styles.mainContainerWorkspace }>
-      <Head>
-        <title>Project Manager | Workspace</title>
-      </Head>
-      <main className={ styles.containerCardWorkspace }>
-        {workspaces.map(({ name, id }) => (
-          <Link href={`/workspace/${id}`} key={`${name}-${id}`}>
-            <a className={ styles.cardWorkspace }>{name}</a>
-          </Link>
-        ))}
-      </main>
-    </div>
+    <>
+      {
+        !isCreate ? <button onClick={ () => setIsCreate(true) } type="button">Criar Workpace</button> : (
+          <>
+            <input type="text" onChange={ ({ target }) => setWorkspaceName(target.value) } />
+            <button onClick={ createWorkspace } type="button">Criar Workpace</button>
+          </>
+        )
+      }
+      <div className={ styles.mainContainerWorkspace }>
+        <Head>
+          <title>Project Manager | Workspace</title>
+        </Head>
+        <main className={ styles.containerCardWorkspace }>
+          {workspaces.map(({ name, id }) => (
+            <Link href={`/workspace/${id}`} key={`${name}-${id}`}>
+              <a className={ styles.cardWorkspace }>{name}</a>
+            </Link>
+          ))}
+        </main>
+      </div>
+    </>
   );
 }
 
