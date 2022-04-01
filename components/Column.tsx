@@ -88,7 +88,7 @@ function Column({ id, title, cards }: IColumnComponent) {
       </div>
       <div>
         {cardList.map(({ title: cardTitle, id: cardId, content }) => (
-          <Card key={`${cardTitle}-${cardId}-${content}`} content={content} />
+          <Card key={`${cardTitle}-${cardId}-${content}`} content={content} cardId={cardId} setCardList={setCardList} cardList={cardList} />
         ))}
       </div>
       {isCreatingCard ? (
