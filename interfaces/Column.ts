@@ -10,3 +10,10 @@ export interface IColumn {
   workspaceId: number;
   cards: ICard[];
 }
+
+export interface IColumnCreate {
+  data: {
+    id: number;
+    title: string;
+  }
+}
