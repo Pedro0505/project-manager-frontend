@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 import jwtDecode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -9,6 +8,7 @@ import styles from '../styles/workspace.module.css';
 import { getToken } from '../helpers';
 import { IWorkspace, IWorkspaceCreate, IWorkspaceResponse } from '../interfaces';
 import { ITokenData } from '../interfaces/Jwt';
+import Workpace from '../components/Workspace';
 
 function Workspace() {
   const [workspaces, setWorkspaces] = useState<IWorkspace[]>([]);
@@ -90,11 +90,17 @@ function Workspace() {
           <title>Project Manager | Workspace</title>
         </Head>
         <main className={ styles.containerCardWorkspace }>
-          {workspaces.map(({ name, id }) => (
-            <Link href={`/workspace/${id}`} key={`${name}-${id}`}>
-              <a className={ styles.cardWorkspace }>{name}</a>
-            </Link>
-          ))}
+          {
+            workspaces.map(({ name, id }) => (
+              <Workpace
+                name={ name }
+                key={ `${name}-${id}` }
+                id={ id }
+                setWorkspaces={ setWorkspaces }
+                workspaces={ workspaces }
+              />
+            ))
+          }
         </main>
       </div>
     </>

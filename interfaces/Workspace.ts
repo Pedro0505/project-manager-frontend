@@ -1,3 +1,4 @@
+import React from 'react';
 import { IColumn } from './Column';
 
 export interface IWorkspace {
@@ -22,4 +23,11 @@ export interface IWorkspaceCreate {
     workspaceName: string;
     id: number;
   }
+}
+
+export interface IWorkspaceProp {
+  name: string;
+  id: number;
+  setWorkspaces: React.Dispatch<React.SetStateAction<IWorkspace[]>>
+  workspaces: IWorkspace[]
 }

@@ -14,7 +14,7 @@ function Login() {
   const [errorExist, setErrorExist] = useState<boolean>(false);
   const router = useRouter();
 
-  const wrongPassword = (error: keyof typeof errorList) => {
+  const handleError = (error: keyof typeof errorList) => {
     const message = errorList[error];
 
     setErrorExist(true);
@@ -41,7 +41,7 @@ function Login() {
       if (axios.isAxiosError(error)) {
         // transfomar os erros em retorno para o usuário
         console.error(error.response);
-        wrongPassword(error.response?.data.error.message);
+        handleError(error.response?.data.error.message);
       }
     }
   };
