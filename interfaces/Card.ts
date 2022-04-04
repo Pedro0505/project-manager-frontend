@@ -2,6 +2,7 @@ export interface ICardCreateRequest {
   content: string;
   title?: string;
   columnId: number;
+  index: number;
 }
 
 export interface ICard extends ICardCreateRequest {

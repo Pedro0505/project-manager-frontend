@@ -2,6 +2,8 @@ import axios, { AxiosResponse } from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 import Column from '../../components/Column';
 import { getToken } from '../../helpers';
 import { ICard, IColumn, IWorkspace, IWorkspaceCreate, IWorkspaceIdResponse } from '../../interfaces';
@@ -16,7 +18,6 @@ function WorkspaceId() {
 
   useEffect(() => {
     console.log('Fetching workspace data');
-    console.log(router.query.id);
 
     const getWorkspaces = async () => {
       const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace/${router.query.id}`;
@@ -72,7 +73,7 @@ function WorkspaceId() {
   };
 
   return (
-    <div>
+    <DndProvider backend={ HTML5Backend }>
       <Head>
         <title>
           Workspace
@@ -96,7 +97,7 @@ function WorkspaceId() {
           ))}
         </div>
       </main>
-    </div>
+    </DndProvider>
   );
 }
 

@@ -51,11 +51,20 @@ function Column({ id, title, cards }: IColumnComponent) {
     setIsEditing(false);
   };
 
+  const moveCard = (fromIndex: number, toIndex: number) => {
+    setCardList((prev) => prev.map((card) => {
+      if (card.index === fromIndex) return { ...card, index: toIndex };
+      if (card.index === toIndex) return { ...card, index: fromIndex };
+      return card;
+    }));
+    console.log('ok');
+  };
+
   const createCard = async (cardContent: string) => {
     if (cardContent === '') return;
     setIsCreatingCard(false);
     const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/card`;
-    const newCard: ICardCreateRequest = { columnId: id, content: cardContent };
+    const newCard: ICardCreateRequest = { columnId: id, content: cardContent, index: 999 };
 
     try {
       const { data } = await axios.post<
@@ -92,16 +101,20 @@ function Column({ id, title, cards }: IColumnComponent) {
           <MdModeEditOutline />
         </button>
       </div>
-      <ul className={ styles.cardList }>
-        {cardList.map(({ title: cardTitle, id: cardId, content }) => (
-          <Card
-            key={`${cardTitle}-${cardId}-${content}`}
-            content={content}
-            cardId={cardId}
-            setCardList={setCardList}
-            cardList={cardList}
-          />
-        ))}
+      <ul className={styles.cardList}>
+        {cardList
+          .sort((a, b) => a.index - b.index)
+          .map(({ title: cardTitle, id: cardId, content, index }) => (
+            <Card
+              key={`${cardTitle}-${cardId}-${content}`}
+              content={content}
+              cardId={cardId}
+              setCardList={setCardList}
+              cardList={cardList}
+              moveCard={moveCard}
+              index={index}
+            />
+          ))}
       </ul>
       {isCreatingCard ? (
         <CardCreate createCard={createCard} setIsCreatingCard={setIsCreatingCard} />
