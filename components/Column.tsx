@@ -10,6 +10,7 @@ import {
 } from '../interfaces';
 import Card from './Card';
 import CardCreate from './CardCreate';
+import styles from '../styles/column.module.css';
 
 interface IColumnComponent {
   id: number;
@@ -70,8 +71,8 @@ function Column({ id, title, cards }: IColumnComponent) {
   };
 
   return (
-    <section>
-      <div>
+    <section className={styles.column}>
+      <div className={styles.columnEditContainer}>
         {isEditing ? (
           <input
             type="text"
@@ -80,17 +81,28 @@ function Column({ id, title, cards }: IColumnComponent) {
             onBlur={cancelEditTitle}
           />
         ) : (
-          <h2>{columnTitleEditing}</h2>
+          <h2 className={styles.columnTitle}>{columnTitleEditing}</h2>
         )}
-        <button type="button" aria-label="editar nome da coluna" onMouseDown={editTitle}>
+        <button
+          className={styles.columnEditButton}
+          type="button"
+          aria-label="editar nome da coluna"
+          onMouseDown={editTitle}
+        >
           <MdModeEditOutline />
         </button>
       </div>
-      <div>
+      <ul className={ styles.cardList }>
         {cardList.map(({ title: cardTitle, id: cardId, content }) => (
-          <Card key={`${cardTitle}-${cardId}-${content}`} content={content} cardId={cardId} setCardList={setCardList} cardList={cardList} />
+          <Card
+            key={`${cardTitle}-${cardId}-${content}`}
+            content={content}
+            cardId={cardId}
+            setCardList={setCardList}
+            cardList={cardList}
+          />
         ))}
-      </div>
+      </ul>
       {isCreatingCard ? (
         <CardCreate createCard={createCard} setIsCreatingCard={setIsCreatingCard} />
       ) : (

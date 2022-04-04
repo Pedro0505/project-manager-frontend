@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import Column from '../../components/Column';
 import { getToken } from '../../helpers';
 import { ICard, IColumn, IWorkspace, IWorkspaceCreate, IWorkspaceIdResponse } from '../../interfaces';
+import styles from '../../styles/workspaceId.module.css';
 
 function WorkspaceId() {
   const [workspace, setWorkspace] = useState<IWorkspace>();
@@ -89,9 +90,11 @@ function WorkspaceId() {
           )
         }
         {workspace?.name}
-        {columns.map(({ title, id, cards }) => (
-          <Column key={`${title}-${id}`} cards={cards} id={id} title={title} />
-        ))}
+        <div className={ styles.board }>
+          {columns.map(({ title, id, cards }) => (
+            <Column key={`${title}-${id}`} cards={cards} id={id} title={title} />
+          ))}
+        </div>
       </main>
     </div>
   );

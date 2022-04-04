@@ -1,0 +1,37 @@
+.column {
+  flex: 0 0 320px;
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 16px;
+}
+
+.columnEditContainer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.columnTitle {
+  font-size: 1rem;
+}
+
+.columnEditButton {
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.columnEditButton:hover {
+  background-color: #d2d2d2;
+}
+
+.cardList {
+  margin-top: 16px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}

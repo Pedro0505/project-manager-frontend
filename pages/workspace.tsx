@@ -49,6 +49,7 @@ function Workspace() {
   const createWorkspace = async () => {
     const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace`;
     const token = getToken() as string;
+    // ??????????????????????????????????
     const decoded = jwtDecode<ITokenData>(token);
     const newWorkspace = { workspaceName, userId: decoded.tokenData.userId };
 

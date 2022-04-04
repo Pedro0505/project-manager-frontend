@@ -1,0 +1,42 @@
+.card {
+  background-color: #fefefe;
+  border-top: 32px solid greenyellow;
+  border-radius: 5px;
+  width: 100%;
+  display: block;
+  position: relative;
+}
+
+.card:hover .excludeButton,
+.card:hover .editButton {
+  display: block;
+}
+
+.cardContent {
+  padding: 8px;
+  font-size: 14px;
+}
+
+.excludeButton {
+  display: none;
+  position: absolute;
+  top: -28px;
+  left: 3px;
+  background-color: #d2d2d2;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.editButton {
+  display: none;
+  position: absolute;
+  top: -28px;
+  right: 3px;
+  background-color: #d2d2d2;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 4px 6px;
+}
