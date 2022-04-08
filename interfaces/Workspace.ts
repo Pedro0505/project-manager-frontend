@@ -29,5 +29,4 @@ export interface IWorkspaceProp {
   name: string;
   id: number;
   setWorkspaces: React.Dispatch<React.SetStateAction<IWorkspace[]>>
-  workspaces: IWorkspace[]
 }

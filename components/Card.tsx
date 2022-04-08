@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { TiInfoOutline } from 'react-icons/ti';
 import { getToken } from '../helpers';
@@ -10,11 +10,11 @@ interface ICardComponent {
   content: string;
   cardId: number;
   setCardList: React.Dispatch<React.SetStateAction<ICard[]>>
-  cardList: ICard[]
 }
 
-function Card({ content, cardId, setCardList, cardList }: ICardComponent) {
-  const [confirmDelete, setConfirmDelete] = useState(true);
+function Card({ content, cardId, setCardList }: ICardComponent) {
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(true);
+  const [keyInterval, setKeyInterval] = useState<number>(0);
 
   const deleteCard = async () => {
     if (!confirmDelete) {
@@ -22,14 +22,21 @@ function Card({ content, cardId, setCardList, cardList }: ICardComponent) {
 
       await axios.delete(endpoint, { headers: { Authorization: getToken() as string } });
 
-      const filtered = cardList.filter(({ id }) => cardId !== id);
+      setCardList((prev) => {
+        const filtered = prev.filter(({ id }) => cardId !== id);
 
-      setCardList(filtered);
+        return filtered;
+      });
     }
 
     setConfirmDelete(false);
-    setTimeout(() => setConfirmDelete(true), 5000);
+    const myKey = setTimeout(() => setConfirmDelete(true), 5000);
+    setKeyInterval(myKey as unknown as number);
   };
+
+  useEffect(() => () => {
+    clearTimeout(keyInterval);
+  }, [keyInterval]);
 
   return (
     <li className={ styles.card }>

@@ -97,7 +97,6 @@ function Workspace() {
                 key={ `${name}-${id}` }
                 id={ id }
                 setWorkspaces={ setWorkspaces }
-                workspaces={ workspaces }
               />
             ))
           }

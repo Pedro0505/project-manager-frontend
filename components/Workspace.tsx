@@ -5,15 +5,17 @@ import { getToken } from '../helpers';
 import styles from '../styles/workspace.module.css';
 import { IWorkspaceProp } from '../interfaces';
 
-function Workpace({ name, id, workspaces, setWorkspaces }: IWorkspaceProp) {
+function Workpace({ name, id, setWorkspaces }: IWorkspaceProp) {
   const excludeWorkspace = async () => {
-    const filtered = workspaces.filter(({ id: workspaceId }) => workspaceId !== id);
-
     const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace/${id}`;
 
     await axios.delete(endpoint, { headers: { Authorization: getToken() as string } });
 
-    setWorkspaces(filtered);
+    setWorkspaces((prev) => {
+      const filtered = prev.filter(({ id: workspaceId }) => workspaceId !== id);
+
+      return filtered;
+    });
   };
 
   return (
