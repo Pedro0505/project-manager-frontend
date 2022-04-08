@@ -5,19 +5,11 @@ import { MdOutlineWarningAmber } from 'react-icons/md';
 import Link from 'next/link';
 import { v4 as uuid } from 'uuid';
 import { useUser } from '@auth0/nextjs-auth0';
+import Image from 'next/image';
 import { storeToken } from '../helpers';
 import styles from '../styles/login.module.css';
-import { ILoginRequest, ILoginResponse, IRegisterUserRequest, IRegisterUserResponse } from '../interfaces';
+import { ILoginRequest, ILoginResponse, IRegisterUserRequest, IRegisterUserResponse, IUser } from '../interfaces';
 import errorList from '../helpers/errorList';
-
-interface IUser {
-  id: number;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  uuid?: string;
-}
 
 function Login() {
   const [email, setEmail] = useState<string>('');
@@ -53,7 +45,6 @@ function Login() {
       router.push('/workspace');
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // transfomar os erros em retorno para o usuário
         console.error(error.response);
         handleError(error.response?.data.error.message);
       }
@@ -182,7 +173,18 @@ function Login() {
       ) }
       <button className={ styles.loginBtn } type="submit">Login</button>
       <div>
-        <Link href="/api/auth/login">Git Hub</Link>
+        <Link href="/api/auth/login">
+          <a className={ styles.githubLogin }>
+            <Image
+              loader={ () => 'https://cdn-icons-png.flaticon.com/512/25/25231.png' }
+              src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+              alt="github logo"
+              width={ 18 }
+              height={ 15 }
+            />
+            <p>Entre com o GitHub</p>
+          </a>
+        </Link>
       </div>
     </form>
   );
