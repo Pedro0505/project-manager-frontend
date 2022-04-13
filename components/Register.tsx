@@ -1,9 +1,10 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { storeToken } from '../helpers';
 import styles from '../styles/login.module.css';
 import { IRegisterUserRequest, IRegisterUserResponse } from '../interfaces';
+import handleAxios from '../helpers/handleAxios';
 
 function Register() {
   const [firstName, setFirstName] = useState('');
@@ -19,13 +20,12 @@ function Register() {
     const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/user/register`;
 
     try {
-      const response = await axios.post<
+      const response = await handleAxios<
         IRegisterUserResponse,
-        AxiosResponse<IRegisterUserResponse>,
         IRegisterUserRequest
-      >(endpoint, newUser);
+      >('post', endpoint, newUser);
 
-      storeToken(response.data.token);
+      storeToken(response.token);
       router.push('/workspace');
     } catch (error) {
       if (axios.isAxiosError(error)) {

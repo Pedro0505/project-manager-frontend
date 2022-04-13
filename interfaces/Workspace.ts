@@ -30,3 +30,8 @@ export interface IWorkspaceProp {
   id: number;
   setWorkspaces: React.Dispatch<React.SetStateAction<IWorkspace[]>>
 }
+
+export interface IWorkspaceCreateResponse {
+  workspaceName: string;
+  userId: number;
+}

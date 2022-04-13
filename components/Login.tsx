@@ -1,15 +1,16 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { MdOutlineWarningAmber } from 'react-icons/md';
+import { AiFillGithub } from 'react-icons/ai';
 import Link from 'next/link';
 import { v4 as uuid } from 'uuid';
 import { useUser } from '@auth0/nextjs-auth0';
-import Image from 'next/image';
 import { storeToken } from '../helpers';
 import styles from '../styles/login.module.css';
 import { ILoginRequest, ILoginResponse, IRegisterUserRequest, IRegisterUserResponse, IUser } from '../interfaces';
 import errorList from '../helpers/errorList';
+import handleAxios from '../helpers/handleAxios';
 
 function Login() {
   const [email, setEmail] = useState<string>('');
@@ -35,13 +36,12 @@ function Login() {
     const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/user/login`;
 
     try {
-      const response = await axios.post<
+      const response = await handleAxios<
         ILoginResponse,
-        AxiosResponse<ILoginResponse>,
         ILoginRequest
-      >(endpoint, user);
+      >('post', endpoint, user);
 
-      storeToken(response.data.token);
+      storeToken(response.token);
       router.push('/workspace');
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -56,10 +56,11 @@ function Login() {
       const emailExist = async (auth0Email: string) => {
         try {
           const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/user/search?q=${auth0Email}`;
-          const { data } = await axios.get<
+
+          const data = await handleAxios<
           IUser,
-          AxiosResponse<IUser>
-          >(endpoint);
+          AxiosRequestConfig
+          >('get', endpoint);
 
           setCheckUser(data);
         } catch (error) {
@@ -74,21 +75,20 @@ function Login() {
         const loginEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/user/login`;
 
         const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/user/search?q=${userEmail}`;
-        const { data } = await axios.get<
+        const data = await handleAxios<
         IUser,
-        AxiosResponse<IUser>
-        >(endpoint);
+        AxiosRequestConfig
+        >('get', endpoint);
 
         const user = { email: userEmail, password: data.uuid as string };
 
         try {
-          const response = await axios.post<
+          const response = await handleAxios<
             ILoginResponse,
-            AxiosResponse<ILoginResponse>,
             ILoginRequest
-            >(loginEndpoint, user);
+            >('post', loginEndpoint, user);
 
-          storeToken(response.data.token);
+          storeToken(response.token);
           router.push('/workspace');
         } catch (error) {
           if (axios.isAxiosError(error)) {
@@ -114,11 +114,7 @@ function Login() {
         const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/user/register`;
 
         try {
-          await axios.post<
-          IRegisterUserResponse,
-          AxiosResponse<IRegisterUserResponse>,
-            IRegisterUserRequest
-          >(endpoint, newUser);
+          await handleAxios<IRegisterUserResponse, IRegisterUserRequest>('post', endpoint, newUser);
 
           await loginAuth0(userEmail);
         } catch (error) {
@@ -173,15 +169,9 @@ function Login() {
       ) }
       <button className={ styles.loginBtn } type="submit">Login</button>
       <div>
-        <Link href="/api/auth/login">
+        <Link href="/api/auth/login?redirectTo=/workspace">
           <a className={ styles.githubLogin }>
-            <Image
-              loader={ () => 'https://cdn-icons-png.flaticon.com/512/25/25231.png' }
-              src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
-              alt="github logo"
-              width={ 18 }
-              height={ 15 }
-            />
+            <AiFillGithub />
             <p>Entre com o GitHub</p>
           </a>
         </Link>
