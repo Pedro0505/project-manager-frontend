@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import jwtDecode from 'jwt-decode';
@@ -6,14 +6,15 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styles from '../styles/workspace.module.css';
 import { getToken } from '../helpers';
-import { IWorkspace, IWorkspaceCreate, IWorkspaceResponse } from '../interfaces';
+import { IWorkspace, IWorkspaceCreate, IWorkspaceCreateResponse, IWorkspaceResponse } from '../interfaces';
 import { ITokenData } from '../interfaces/Jwt';
 import Workpace from '../components/Workspace';
+import handleAxios from '../helpers/handleAxios';
 
 function Workspace() {
   const [workspaces, setWorkspaces] = useState<IWorkspace[]>([]);
   const [isCreate, setIsCreate] = useState<boolean>(false);
-  const [limitCreate, setLimitCreate] = useState<boolean>(false);
+  const [limitCreate, setLimitCreate] = useState<number>(0);
   const [workspaceName, setWorkspaceName] = useState<string>('');
   const router = useRouter();
 
@@ -24,12 +25,13 @@ function Workspace() {
       const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace`;
 
       try {
-        const { data } = await axios.get<IWorkspaceResponse, AxiosResponse<IWorkspaceResponse>>(
+        const { data } = await handleAxios<IWorkspaceResponse, AxiosRequestConfig>(
+          'get',
           endpoint,
           { headers: { Authorization: getToken() as string } },
         );
 
-        setWorkspaces(data.data);
+        setWorkspaces(data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           router.push('/');
@@ -41,29 +43,27 @@ function Workspace() {
   }, [router]);
 
   useEffect(() => {
-    if (workspaces.length === 3) {
-      setLimitCreate(true);
-    }
+    setLimitCreate(workspaces.length);
   }, [workspaces]);
 
   const createWorkspace = async () => {
     const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace`;
     const token = getToken() as string;
-    // ??????????????????????????????????
     const decoded = jwtDecode<ITokenData>(token);
     const newWorkspace = { workspaceName, userId: decoded.tokenData.userId };
 
     try {
-      if (!limitCreate) {
-        const { data } = await axios.post<IWorkspaceCreate, AxiosResponse<IWorkspaceCreate>>(
+      if (!(limitCreate === 3)) {
+        const { data } = await handleAxios<IWorkspaceCreate, IWorkspaceCreateResponse>(
+          'post',
           endpoint,
           newWorkspace,
           { headers: { Authorization: token } },
         );
 
         const created = {
-          name: data.data.workspaceName,
-          id: data.data.id,
+          name: data.workspaceName,
+          id: data.id,
           ownerId: decoded.tokenData.userId,
         };
 
@@ -98,7 +98,6 @@ function Workspace() {
                 key={ `${name}-${id}` }
                 id={ id }
                 setWorkspaces={ setWorkspaces }
-                workspaces={ workspaces }
               />
             ))
           }

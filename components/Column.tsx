@@ -99,7 +99,6 @@ function Column({ id, title, cards }: IColumnComponent) {
             content={content}
             cardId={cardId}
             setCardList={setCardList}
-            cardList={cardList}
           />
         ))}
       </ul>

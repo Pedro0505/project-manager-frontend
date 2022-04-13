@@ -1,9 +1,10 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Column from '../../components/Column';
 import { getToken } from '../../helpers';
+import handleAxios from '../../helpers/handleAxios';
 import { ICard, IColumn, IWorkspace, IWorkspaceCreate, IWorkspaceIdResponse } from '../../interfaces';
 import styles from '../../styles/workspaceId.module.css';
 
@@ -22,11 +23,10 @@ function WorkspaceId() {
       const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace/${router.query.id}`;
 
       try {
-        const {
-          data: { data },
-        } = await axios.get<IWorkspaceIdResponse, AxiosResponse<IWorkspaceIdResponse>>(endpoint, {
-          headers: { Authorization: getToken() as string },
-        });
+        const { data } = await handleAxios<
+        IWorkspaceIdResponse,
+        AxiosRequestConfig
+        >('get', endpoint, { headers: { Authorization: getToken() as string } });
 
         setWorkspace({ id: data.id, name: data.name, ownerId: data.ownerId });
         setColumns(data.columns);
