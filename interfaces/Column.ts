@@ -5,15 +5,15 @@ export interface IColumnUpdateRequest {
 }
 
 export interface IColumn {
-  id: number;
+  id: string;
   title: string;
-  workspaceId: number;
+  workspaceId: string;
   cards: ICard[];
 }
 
 export interface IColumnCreate {
   data: {
-    id: number;
+    id: string;
     title: string;
   }
 }
