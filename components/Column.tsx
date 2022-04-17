@@ -1,24 +1,24 @@
 import axios, { AxiosResponse } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { MdModeEditOutline } from 'react-icons/md';
+import { Droppable } from 'react-beautiful-dnd';
 import { getToken } from '../helpers';
 import {
   ICard,
   ICardCreateRequest,
   ICardCreateResponse,
+  IColumn,
   IColumnUpdateRequest,
 } from '../interfaces';
 import Card from './Card';
 import CardCreate from './CardCreate';
 import styles from '../styles/column.module.css';
 
-interface IColumnComponent {
-  id: number;
-  title: string;
-  cards: ICard[];
+interface PropTypes {
+  columnData: IColumn;
 }
 
-function Column({ id, title, cards }: IColumnComponent) {
+function Column({ columnData: { id, title, cards } }: PropTypes) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isCreatingCard, setIsCreatingCard] = useState<boolean>(false);
   const [columnTitleBackup, setColumnTitleBackup] = useState<string>(title);
@@ -92,16 +92,16 @@ function Column({ id, title, cards }: IColumnComponent) {
           <MdModeEditOutline />
         </button>
       </div>
-      <ul className={ styles.cardList }>
-        {cardList.map(({ title: cardTitle, id: cardId, content }) => (
-          <Card
-            key={`${cardTitle}-${cardId}-${content}`}
-            content={content}
-            cardId={cardId}
-            setCardList={setCardList}
-          />
-        ))}
-      </ul>
+      <Droppable droppableId={id}>
+        {(provided) => (
+          <ul ref={provided.innerRef} {...provided.droppableProps}>
+            {cards.map((card, index) => (
+              <Card key={card.id} cardData={card} cardIndex={index} />
+            ))}
+            {provided.placeholder}
+          </ul>
+        )}
+      </Droppable>
       {isCreatingCard ? (
         <CardCreate createCard={createCard} setIsCreatingCard={setIsCreatingCard} />
       ) : (
