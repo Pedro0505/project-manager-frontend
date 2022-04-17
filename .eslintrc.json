@@ -19,6 +19,7 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
     "import/extensions": ["error", "ignorePackages", { "ts": "never", "tsx": "never" }],
+    "import/prefer-default-export": "off",
     "no-console": "off",
     "object-curly-newline": ["error", { "consistent": true }],
     "jsx-a11y/anchor-is-valid": "off",
