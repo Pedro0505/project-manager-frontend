@@ -4,7 +4,7 @@ import { formatWorkspaceData } from '../formatWorkspaceData';
 import { getToken } from '../token';
 
 export const getBoardData = async (workspaceId: string): Promise<IBoardData> => {
-  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace/${workspaceId}`;
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace/${workspaceId}?includeColumns=true`;
 
   const result = await axios.get(endpoint, { headers: { Authorization: getToken() as string } });
   const { data } = result.data as IWorkspaceIdResponse;

@@ -3,6 +3,7 @@
   background-color: #eee;
   border-radius: 5px;
   padding: 16px;
+  height: fit-content;
 }
 
 .columnEditContainer {

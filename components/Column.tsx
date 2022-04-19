@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { MdModeEditOutline } from 'react-icons/md';
-import { Droppable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { getToken } from '../helpers';
 import {
   ICard,
@@ -16,9 +16,10 @@ import styles from '../styles/column.module.css';
 
 interface PropTypes {
   columnData: IColumn;
+  index: number;
 }
 
-function Column({ columnData: { id, title, cards } }: PropTypes) {
+function Column({ columnData: { id, title, cards }, index }: PropTypes) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isCreatingCard, setIsCreatingCard] = useState<boolean>(false);
   const [columnTitleBackup, setColumnTitleBackup] = useState<string>(title);
@@ -71,45 +72,53 @@ function Column({ columnData: { id, title, cards } }: PropTypes) {
   };
 
   return (
-    <section className={styles.column}>
-      <div className={styles.columnEditContainer}>
-        {isEditing ? (
-          <input
-            type="text"
-            value={columnTitleEditing}
-            onChange={({ target }) => setColumnTitleEditing(target.value)}
-            onBlur={cancelEditTitle}
-          />
-        ) : (
-          <h2 className={styles.columnTitle}>{columnTitleEditing}</h2>
-        )}
-        <button
-          className={styles.columnEditButton}
-          type="button"
-          aria-label="editar nome da coluna"
-          onMouseDown={editTitle}
+    <Draggable draggableId={id} index={index}>
+      {(dragProvided) => (
+        <section
+          className={styles.column}
+          {...dragProvided.draggableProps}
+          ref={dragProvided.innerRef}
         >
-          <MdModeEditOutline />
-        </button>
-      </div>
-      <Droppable droppableId={id}>
-        {(provided) => (
-          <ul ref={provided.innerRef} {...provided.droppableProps}>
-            {cards.map((card, index) => (
-              <Card key={card.id} cardData={card} cardIndex={index} />
-            ))}
-            {provided.placeholder}
-          </ul>
-        )}
-      </Droppable>
-      {isCreatingCard ? (
-        <CardCreate createCard={createCard} setIsCreatingCard={setIsCreatingCard} />
-      ) : (
-        <button type="button" onMouseDown={() => setIsCreatingCard(true)}>
-          Adicionar card
-        </button>
+          <div className={styles.columnEditContainer} {...dragProvided.dragHandleProps}>
+            {isEditing ? (
+              <input
+                type="text"
+                value={columnTitleEditing}
+                onChange={({ target }) => setColumnTitleEditing(target.value)}
+                onBlur={cancelEditTitle}
+              />
+            ) : (
+              <h2 className={styles.columnTitle}>{columnTitleEditing}</h2>
+            )}
+            <button
+              className={styles.columnEditButton}
+              type="button"
+              aria-label="editar nome da coluna"
+              onMouseDown={editTitle}
+            >
+              <MdModeEditOutline />
+            </button>
+          </div>
+          <Droppable droppableId={id} type="CARD">
+            {(provided) => (
+              <ul ref={provided.innerRef} {...provided.droppableProps}>
+                {cards.map((card, cardIndex) => (
+                  <Card key={card.id} cardData={card} cardIndex={cardIndex} />
+                ))}
+                {provided.placeholder}
+              </ul>
+            )}
+          </Droppable>
+          {isCreatingCard ? (
+            <CardCreate createCard={createCard} setIsCreatingCard={setIsCreatingCard} />
+          ) : (
+            <button type="button" onMouseDown={() => setIsCreatingCard(true)}>
+              Adicionar card
+            </button>
+          )}
+        </section>
       )}
-    </section>
+    </Draggable>
   );
 }
 

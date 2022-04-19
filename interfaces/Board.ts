@@ -1,5 +1,8 @@
 import { IColumn } from './Column';
 
 export interface IBoardData {
-  [columnId: string]: IColumn;
+  columns: {
+    [columnId: string]: IColumn;
+  };
+  columnsOrder: string[];
 }
