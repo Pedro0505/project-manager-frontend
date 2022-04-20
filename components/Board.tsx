@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { getBoardData } from '../helpers/fetch';
+import { getBoardData, moveCardsSameColumn } from '../helpers/fetch';
 import { IBoardData } from '../interfaces';
 import Column from './Column';
 import style from '../styles/board.module.css';
@@ -9,7 +9,7 @@ interface PropTypes {
   workspaceId: string;
 }
 
-const onDragEnd = (
+const onDragEnd = async (
   result: DropResult,
   boardData: IBoardData,
   setBoardData: React.Dispatch<React.SetStateAction<IBoardData>>,
@@ -57,6 +57,8 @@ const onDragEnd = (
             },
           },
         });
+
+        await moveCardsSameColumn(copiedItems);
       }
 
       break;
