@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { getBoardData, moveCardsSameColumn } from '../helpers/fetch';
+import { getBoardData, moveCardsBetweenColumn, moveCardsSameColumn } from '../helpers/fetch';
 import { IBoardData } from '../interfaces';
 import Column from './Column';
 import style from '../styles/board.module.css';
@@ -25,6 +25,7 @@ const onDragEnd = async (
         const sourceItems = [...sourceColumn.cards];
         const destItems = [...destColumn.cards];
         const [removed] = sourceItems.splice(source.index, 1);
+        removed.columnId = destination.droppableId;
         destItems.splice(destination.index, 0, removed);
 
         setBoardData({
@@ -41,6 +42,8 @@ const onDragEnd = async (
             },
           },
         });
+
+        await moveCardsBetweenColumn(destItems);
       } else {
         const column = boardData.columns[source.droppableId];
         const copiedItems = [...column.cards];
