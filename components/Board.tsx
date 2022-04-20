@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { getBoardData, moveCardsBetweenColumn, moveCardsSameColumn } from '../helpers/fetch';
+import { getBoardData, moveCardsBetweenColumn, moveCardsSameColumn, moveColumns } from '../helpers/fetch';
 import { IBoardData } from '../interfaces';
 import Column from './Column';
 import style from '../styles/board.module.css';
@@ -76,6 +76,8 @@ const onDragEnd = async (
         ...prev,
         columnsOrder: newColumnOrder,
       }));
+
+      await moveColumns(newColumnOrder);
 
       break;
     }
