@@ -2,37 +2,43 @@
   flex: 0 0 320px;
   background-color: #eee;
   border-radius: 5px;
-  padding: 16px;
+  padding: 12px;
   height: fit-content;
 }
 
-.columnEditContainer {
+.columnHeader {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.columnTitleInput {
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 3px;
+  border: none;
 }
 
 .columnTitle {
+  padding-left: 4px;
+  cursor: pointer;
+  flex-grow: 1;
   font-size: 1rem;
+  text-align: start;
 }
 
-.columnEditButton {
+.columnHeaderButton {
   background-color: transparent;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  padding: 8px;
+  padding: 4px;
 }
 
-.columnEditButton:hover {
+.columnHeaderButton:hover {
   background-color: #d2d2d2;
-}
-
-.cardList {
-  margin-top: 16px;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
 }
