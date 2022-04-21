@@ -11,14 +11,14 @@ type PropTypes = {
   id: string;
   title: string;
   dragHandleProps: DraggableProvidedDragHandleProps | undefined;
+  removeColumn: (columnId: string) => void;
 };
 
-function ColumnHeader({ id, title, dragHandleProps }: PropTypes) {
+function ColumnHeader({ id, title, dragHandleProps, removeColumn }: PropTypes) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [columnTitleBackup, setColumnTitleBackup] = useState<string>(title);
   const [columnTitleEditing, setColumnTitleEditing] = useState<string>(title);
   const [canDelete, setCanDelete] = useState<boolean>(false);
-  const [deleteTimeoutReference, setDeleteTimeoutReference] = useState<any>();
   const editInputReference = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -44,15 +44,19 @@ function ColumnHeader({ id, title, dragHandleProps }: PropTypes) {
 
   const deleteColumn = async () => {
     if (canDelete) {
-      await fetch.deleteColumn(id);
+      // se for usar redux, mover o remove column para dentro do delete column
+      fetch.deleteColumn(id);
+      removeColumn(id);
     }
 
     setCanDelete(true);
-    const reference = setTimeout(() => setCanDelete(false), 3000);
-    setDeleteTimeoutReference(reference);
   };
 
-  useEffect(() => () => clearTimeout(deleteTimeoutReference), [deleteTimeoutReference]);
+  useEffect(() => {
+    const reference = setTimeout(() => setCanDelete(false), 3000);
+
+    return () => clearTimeout(reference);
+  }, [canDelete]);
 
   return (
     <div className={styles.columnHeader} {...dragHandleProps}>

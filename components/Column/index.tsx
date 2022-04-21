@@ -11,9 +11,10 @@ import ColumnHeader from './components/ColumnHeader';
 interface PropTypes {
   columnData: IColumn;
   index: number;
+  removeColumn: (columnId: string) => void;
 }
 
-function Column({ columnData: { id, title, cards }, index }: PropTypes) {
+function Column({ columnData: { id, title, cards }, index, removeColumn }: PropTypes) {
   const [isCreatingCard, setIsCreatingCard] = useState<boolean>(false);
   const [cardList, setCardList] = useState<ICard[]>(cards);
 
@@ -44,7 +45,12 @@ function Column({ columnData: { id, title, cards }, index }: PropTypes) {
           {...dragProvided.draggableProps}
           ref={dragProvided.innerRef}
         >
-          <ColumnHeader id={id} title={title} dragHandleProps={dragProvided.dragHandleProps} />
+          <ColumnHeader
+            id={id}
+            title={title}
+            removeColumn={removeColumn}
+            dragHandleProps={dragProvided.dragHandleProps}
+          />
           <Droppable droppableId={id} type="CARD">
             {(provided) => (
               <ul ref={provided.innerRef} {...provided.droppableProps}>

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { getBoardData, moveCardsBetweenColumn, moveCardsSameColumn, moveColumns } from '../helpers/fetch';
+import {
+  getBoardData,
+  moveCardsBetweenColumn,
+  moveCardsSameColumn,
+  moveColumns,
+} from '../helpers/fetch';
 import { IBoardData } from '../interfaces';
 import Column from './Column';
 import style from '../styles/board.module.css';
@@ -102,13 +107,28 @@ function Board({ workspaceId }: PropTypes) {
     fetchColumns();
   }, [workspaceId]);
 
+  const removeColumn = (columnId: string) => {
+    const { columns, columnsOrder } = { ...boardData };
+
+    delete columns[columnId];
+    const newColumnsOrder = columnsOrder.filter((id) => columnId !== id);
+    console.log('updated state', { columns, columnsOrder });
+
+    setBoardData({ columns, columnsOrder: newColumnsOrder });
+  };
+
   return (
     <DragDropContext onDragEnd={(result) => onDragEnd(result, boardData, setBoardData)}>
       <Droppable droppableId="all-columns" direction="horizontal" type="COLUMN">
         {(provided) => (
           <div className={style.board} {...provided.droppableProps} ref={provided.innerRef}>
             {boardData.columnsOrder.map((columnId, index) => (
-              <Column key={columnId} columnData={boardData.columns[columnId]} index={index} />
+              <Column
+                key={columnId}
+                columnData={boardData.columns[columnId]}
+                index={index}
+                removeColumn={removeColumn}
+              />
             ))}
             {provided.placeholder}
           </div>
