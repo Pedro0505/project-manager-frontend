@@ -6,7 +6,7 @@ import {
   moveCardsSameColumn,
   moveColumns,
 } from '../helpers/fetch';
-import { IBoardData } from '../interfaces';
+import { IBoardData, ICard } from '../interfaces';
 import Column from './Column';
 import style from '../styles/board.module.css';
 
@@ -117,6 +117,13 @@ function Board({ workspaceId }: PropTypes) {
     setBoardData({ columns, columnsOrder: newColumnsOrder });
   };
 
+  const addCard = (card: ICard) => {
+    const { columns, columnsOrder } = { ...boardData };
+    columns[card.columnId].cards.push(card);
+
+    setBoardData({ columns, columnsOrder });
+  };
+
   return (
     <DragDropContext onDragEnd={(result) => onDragEnd(result, boardData, setBoardData)}>
       <Droppable droppableId="all-columns" direction="horizontal" type="COLUMN">
@@ -128,6 +135,7 @@ function Board({ workspaceId }: PropTypes) {
                 columnData={boardData.columns[columnId]}
                 index={index}
                 removeColumn={removeColumn}
+                addCard={addCard}
               />
             ))}
             {provided.placeholder}

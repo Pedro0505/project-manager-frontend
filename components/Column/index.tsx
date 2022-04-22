@@ -1,42 +1,19 @@
-import axios, { AxiosResponse } from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { getToken } from '../../helpers';
-import { ICard, ICardCreateRequest, ICardCreateResponse, IColumn } from '../../interfaces';
+import { ICard, IColumn } from '../../interfaces';
 import Card from '../Card';
-import CardCreate from '../CardCreate';
 import styles from '../../styles/column.module.css';
 import ColumnHeader from './components/ColumnHeader';
+import ColumnFooter from './components/ColumnFooter';
 
 interface PropTypes {
   columnData: IColumn;
   index: number;
   removeColumn: (columnId: string) => void;
+  addCard: (card: ICard) => void;
 }
 
-function Column({ columnData: { id, title, cards }, index, removeColumn }: PropTypes) {
-  const [isCreatingCard, setIsCreatingCard] = useState<boolean>(false);
-  const [cardList, setCardList] = useState<ICard[]>(cards);
-
-  const createCard = async (cardContent: string) => {
-    if (cardContent === '') return;
-    setIsCreatingCard(false);
-    const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/card`;
-    const newCard: ICardCreateRequest = { columnId: id, content: cardContent };
-
-    try {
-      const { data } = await axios.post<
-        ICardCreateResponse,
-        AxiosResponse<ICardCreateResponse>,
-        ICardCreateRequest
-      >(endpoint, newCard, { headers: { Authorization: getToken() as string } });
-
-      setCardList((prev) => [...prev, data.data]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+function Column({ columnData: { id, title, cards }, index, removeColumn, addCard }: PropTypes) {
   return (
     <Draggable draggableId={id} index={index}>
       {(dragProvided) => (
@@ -61,13 +38,7 @@ function Column({ columnData: { id, title, cards }, index, removeColumn }: PropT
               </ul>
             )}
           </Droppable>
-          {isCreatingCard ? (
-            <CardCreate createCard={createCard} setIsCreatingCard={setIsCreatingCard} />
-          ) : (
-            <button type="button" onMouseDown={() => setIsCreatingCard(true)}>
-              Adicionar card
-            </button>
-          )}
+          <ColumnFooter id={id} addCard={addCard} />
         </section>
       )}
     </Draggable>
