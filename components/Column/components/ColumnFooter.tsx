@@ -2,6 +2,7 @@ import React, { FocusEvent, KeyboardEvent, useEffect, useRef, useState } from 'r
 import { MdAdd, MdOutlineClose } from 'react-icons/md';
 import * as fetch from '../../../helpers/fetch';
 import { ICard } from '../../../interfaces';
+import styles from '../../../styles/column.module.css';
 
 interface PropTypes {
   id: string;
@@ -43,10 +44,10 @@ function ColumnFooter({ id, addCard }: PropTypes) {
   };
 
   return (
-    <div>
+    <div className={styles.columnFooter}>
       {isCreatingCard ? (
         <>
-          <div>
+          <div className={styles.columnFooterInputContainer}>
             <textarea
               ref={createInputReference}
               value={content}
@@ -57,7 +58,7 @@ function ColumnFooter({ id, addCard }: PropTypes) {
             />
             <span>{maxLength - content.length}</span>
           </div>
-          <div>
+          <div className={styles.columnFooterInputButtonsContainer}>
             <button id="add-card-button" type="button" onClick={createCard}>
               Adicionar card
             </button>
@@ -67,8 +68,12 @@ function ColumnFooter({ id, addCard }: PropTypes) {
           </div>
         </>
       ) : (
-        <button type="button" onClick={() => setIsCreatingCard(true)}>
-          <MdAdd />
+        <button
+          className={styles.columnFooterAddButton}
+          type="button"
+          onClick={() => setIsCreatingCard(true)}
+        >
+          <MdAdd size="18px" />
           <span>Adicionar card</span>
         </button>
       )}
