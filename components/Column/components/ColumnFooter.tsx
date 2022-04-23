@@ -1,4 +1,4 @@
-import React, { FocusEvent, useEffect, useRef, useState } from 'react';
+import React, { FocusEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { MdAdd, MdOutlineClose } from 'react-icons/md';
 import * as fetch from '../../../helpers/fetch';
 import { ICard } from '../../../interfaces';
@@ -37,6 +37,11 @@ function ColumnFooter({ id, addCard }: PropTypes) {
     addCard(newCard);
   };
 
+  const handleKeyboard = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter') createCard();
+    if (event.key === 'Escape') handleCancel();
+  };
+
   return (
     <div>
       {isCreatingCard ? (
@@ -48,6 +53,7 @@ function ColumnFooter({ id, addCard }: PropTypes) {
               maxLength={190}
               onChange={({ target }) => setContent(target.value)}
               onBlur={handleBlur}
+              onKeyDown={handleKeyboard}
             />
             <span>{maxLength - content.length}</span>
           </div>
