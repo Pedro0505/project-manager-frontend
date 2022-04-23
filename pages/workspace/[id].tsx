@@ -1,43 +1,28 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import Column from '../../components/Column';
+import Board from '../../components/Board';
 import { getToken } from '../../helpers';
-import handleAxios from '../../helpers/handleAxios';
-import { ICard, IColumn, IWorkspace, IWorkspaceCreate, IWorkspaceIdResponse } from '../../interfaces';
-import styles from '../../styles/workspaceId.module.css';
+import { getWorkspace } from '../../helpers/fetch';
+import { ICard, IWorkspace, IWorkspaceCreate } from '../../interfaces';
 
 function WorkspaceId() {
   const [workspace, setWorkspace] = useState<IWorkspace>();
   const [workspaceName, setWorkspaceName] = useState<string>('');
   const [isCreate, setIsCreate] = useState<boolean>(false);
-  const [columns, setColumns] = useState<IColumn[]>([]);
   const router = useRouter();
 
   useEffect(() => {
     console.log('Fetching workspace data');
-    console.log(router.query.id);
 
-    const getWorkspaces = async () => {
-      const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace/${router.query.id}`;
-
-      try {
-        const { data } = await handleAxios<
-        IWorkspaceIdResponse,
-        AxiosRequestConfig
-        >('get', endpoint, { headers: { Authorization: getToken() as string } });
-
-        setWorkspace({ id: data.id, name: data.name, ownerId: data.ownerId });
-        setColumns(data.columns);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          router.push('/workspace');
-        }
-      }
+    const fetchWorkspace = async () => {
+      const fetchedWorkspace = await getWorkspace(router.query.id as string);
+      setWorkspace(fetchedWorkspace);
     };
 
-    if (router.query.id) getWorkspaces();
+    // turn into loading
+    if (router.query.id) fetchWorkspace();
   }, [router]);
 
   const createColumn = async () => {
@@ -63,7 +48,7 @@ function WorkspaceId() {
         cards: [] as ICard[],
       };
 
-      setColumns((prev) => [...prev, created]);
+      // setColumns((prev) => [...prev, created]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.message);
@@ -76,24 +61,30 @@ function WorkspaceId() {
       <Head>
         <title>
           Workspace
+          {' '}
           {workspace?.name || ''}
         </title>
       </Head>
       <main>
-        {
-          !isCreate ? <button onClick={ () => setIsCreate(true) } type="button">Criar Coluna</button> : (
-            <>
-              <input type="text" onChange={ ({ target }) => setWorkspaceName(target.value) } />
-              <button type="button" onMouseDown={ createColumn }>Criar Coluna</button>
-              <button type="button" onClick={ () => setIsCreate(false) }>X</button>
-            </>
-          )
-        }
+        {!isCreate ? (
+          <button onClick={() => setIsCreate(true)} type="button">
+            Criar Coluna
+          </button>
+        ) : (
+          <>
+            <input type="text" onChange={({ target }) => setWorkspaceName(target.value)} />
+            <button type="button" onMouseDown={createColumn}>
+              Criar Coluna
+            </button>
+            <button type="button" onClick={() => setIsCreate(false)}>
+              X
+            </button>
+          </>
+        )}
         {workspace?.name}
-        <div className={ styles.board }>
-          {columns.map(({ title, id, cards }) => (
-            <Column key={`${title}-${id}`} cards={cards} id={id} title={title} />
-          ))}
+        <div>
+          {/* turn into laoding */}
+          {router.query.id && <Board workspaceId={router.query.id as string} />}
         </div>
       </main>
     </div>

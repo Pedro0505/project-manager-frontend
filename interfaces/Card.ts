@@ -1,11 +1,11 @@
 export interface ICardCreateRequest {
   content: string;
   title?: string;
-  columnId: number;
+  columnId: string;
 }
 
 export interface ICard extends ICardCreateRequest {
-  id: number;
+  id: string;
 }
 
 export interface ICardCreateResponse {

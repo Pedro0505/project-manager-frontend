@@ -7,6 +7,10 @@
   position: relative;
 }
 
+.cardDragging {
+  opacity: 0.5;
+}
+
 .card:hover .excludeButton,
 .card:hover .editButton {
   display: block;

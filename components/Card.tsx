@@ -1,54 +1,52 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { FaTrash } from 'react-icons/fa';
-import { TiInfoOutline } from 'react-icons/ti';
-import { getToken } from '../helpers';
+import React from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import { ICard } from '../interfaces';
 import styles from '../styles/card.module.css';
 
-interface ICardComponent {
-  content: string;
-  cardId: number;
-  setCardList: React.Dispatch<React.SetStateAction<ICard[]>>
+interface PropTypes {
+  cardData: ICard;
+  cardIndex: number;
 }
 
-function Card({ content, cardId, setCardList }: ICardComponent) {
-  const [confirmDelete, setConfirmDelete] = useState<boolean>(true);
-  const [keyInterval, setKeyInterval] = useState<number>(0);
+function Card({ cardData: { id, content }, cardIndex }: PropTypes) {
+  // const [confirmDelete, setConfirmDelete] = useState<boolean>(true);
+  // const [keyInterval, setKeyInterval] = useState<number>(0);
 
-  const deleteCard = async () => {
-    if (!confirmDelete) {
-      const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/card/${cardId}`;
+  // const deleteCard = async () => {
+  //   if (!confirmDelete) {
+  //     const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/card/${id}`;
 
-      await axios.delete(endpoint, { headers: { Authorization: getToken() as string } });
+  //     await axios.delete(endpoint, { headers: { Authorization: getToken() as string } });
 
-      setCardList((prev) => {
-        const filtered = prev.filter(({ id }) => cardId !== id);
+  //     setCardList((prev) => {
+  //       const filtered = prev.filter(({ id }) => cardId !== id);
 
-        return filtered;
-      });
-    }
+  //       return filtered;
+  //     });
+  //   }
 
-    setConfirmDelete(false);
-    const myKey = setTimeout(() => setConfirmDelete(true), 5000);
-    setKeyInterval(myKey as unknown as number);
-  };
+  //   setConfirmDelete(false);
+  //   const myKey = setTimeout(() => setConfirmDelete(true), 5000);
+  //   setKeyInterval(myKey as unknown as number);
+  // };
 
-  useEffect(() => () => {
-    clearTimeout(keyInterval);
-  }, [keyInterval]);
+  // useEffect(() => () => {
+  //   clearTimeout(keyInterval);
+  // }, [keyInterval]);
 
   return (
-    <li className={ styles.card }>
-      <div className={ styles.cardContent }>{content}</div>
-      <button
-        className={ styles.excludeButton }
-        type="button"
-        onClick={ deleteCard }
-      >
-        { confirmDelete ? <FaTrash /> : <TiInfoOutline title="Ao clicar você estará excluindo permanentemente esse card" /> }
-      </button>
-    </li>
+    <Draggable draggableId={id} index={cardIndex}>
+      {(provided, snapshot) => (
+        <li
+          className={`${styles.card} ${snapshot.isDragging ? styles.cardDragging : ''}`}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <div className={styles.cardContent}>{content}</div>
+        </li>
+      )}
+    </Draggable>
   );
 }
 
