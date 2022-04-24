@@ -1,10 +1,11 @@
 import { IBoardData } from '../../interfaces';
-import { DELETE_CARD, DELETE_COLUMN, EDIT_CARD, INITIAL_FETCH } from '../actions';
+import { DELETE_CARD, DELETE_COLUMN, EDIT_CARD, EDIT_COLUMN, INITIAL_FETCH } from '../actions';
 import {
   IAction,
   IDeleteCard,
   IDeleteColumn,
   IEditCard,
+  IEditColumn,
   IInitialFetch,
 } from '../actions/interfaces';
 
@@ -59,6 +60,15 @@ const reducer = (state: IBoardData = initialState, action: IAction): IBoardData 
       const newColumnsOrder = columnsOrder.filter((id) => id !== payload);
 
       return { columns, columnsOrder: newColumnsOrder };
+    }
+
+    case EDIT_COLUMN: {
+      const { payload } = action as IEditColumn;
+      const { columns, columnsOrder } = { ...state };
+
+      columns[payload.id].title = payload.title;
+
+      return { columns, columnsOrder };
     }
 
     default:

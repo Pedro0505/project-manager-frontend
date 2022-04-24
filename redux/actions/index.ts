@@ -1,12 +1,13 @@
 import { Dispatch } from 'redux';
 import * as fetch from '../../helpers/fetch';
 import { IBoardData, ICard } from '../../interfaces';
-import { IDeleteCard, IDeleteColumn, IEditCard, IInitialFetch } from './interfaces';
+import { IDeleteCard, IDeleteColumn, IEditCard, IEditColumn, IInitialFetch } from './interfaces';
 
 export const INITIAL_FETCH = 'INITIAL_FETCH';
 export const EDIT_CARD = 'EDIT_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
 export const DELETE_COLUMN = 'DELETE_COLUMN';
+export const EDIT_COLUMN = 'EDIT_COLUMN';
 
 const initialFetchAction = (payload: IBoardData): IInitialFetch => ({
   type: INITIAL_FETCH,
@@ -28,6 +29,11 @@ const deleteColumnAction = (payload: string): IDeleteColumn => ({
   payload,
 });
 
+const editColumnAction = (payload: { id: string; title: string }): IEditColumn => ({
+  type: EDIT_COLUMN,
+  payload,
+});
+
 export const initialFetch = (workspaceId: string) => async (dispatch: Dispatch) => {
   const boardData = await fetch.getBoardData(workspaceId);
   dispatch(initialFetchAction(boardData));
@@ -41,6 +47,18 @@ export const deleteColumn = (columnId: string) => async (dispatch: Dispatch) => 
     await promise;
     console.log('Delete column success');
   } catch (error) {
-    console.error('Delete column fail');
+    console.error('Delete column fail', error);
+  }
+};
+
+export const editColumn = (columnId: string, newTitle: string) => async (dispatch: Dispatch) => {
+  const promise = fetch.editColumnName(columnId, newTitle);
+  dispatch(editColumnAction({ id: columnId, title: newTitle }));
+
+  try {
+    await promise;
+    console.log('Edit column success');
+  } catch (error) {
+    console.error('Edit column fail', error);
   }
 };

@@ -6,7 +6,6 @@ import { MdDelete, MdWarning } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
-import * as fetch from '../../../helpers/fetch';
 import * as actions from '../../../redux/actions';
 import styles from '../../../styles/column.module.css';
 import { IBoardData } from '../../../interfaces';
@@ -19,8 +18,7 @@ type PropTypes = {
 
 function ColumnHeader({ id, title, dragHandleProps }: PropTypes) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [columnTitleBackup, setColumnTitleBackup] = useState<string>(title);
-  const [columnTitleEditing, setColumnTitleEditing] = useState<string>(title);
+  const [newTitle, setNewTitle] = useState<string>(title);
   const [canDelete, setCanDelete] = useState<boolean>(false);
   const editInputReference = useRef<HTMLInputElement>(null);
   const dispatch: ThunkDispatch<IBoardData, any, AnyAction> = useDispatch();
@@ -30,14 +28,13 @@ function ColumnHeader({ id, title, dragHandleProps }: PropTypes) {
   });
 
   const editTitle = async () => {
-    await fetch.editColumnName(id, columnTitleEditing);
+    dispatch(actions.editColumn(id, newTitle));
 
-    setColumnTitleBackup(columnTitleEditing);
     setIsEditing(false);
   };
 
   const cancelEditTitle = () => {
-    setColumnTitleEditing(columnTitleBackup);
+    setNewTitle(title);
     setIsEditing(false);
   };
 
@@ -65,14 +62,14 @@ function ColumnHeader({ id, title, dragHandleProps }: PropTypes) {
           ref={editInputReference}
           type="text"
           className={styles.columnTitleInput}
-          value={columnTitleEditing}
-          onChange={({ target }) => setColumnTitleEditing(target.value)}
+          value={newTitle}
+          onChange={({ target }) => setNewTitle(target.value)}
           onBlur={cancelEditTitle}
           onKeyDown={handleKeyboard}
         />
       ) : (
         <h2 className={styles.columnTitle} onClick={() => setIsEditing(true)}>
-          {columnTitleEditing}
+          {title}
         </h2>
       )}
       <button type="button" className={styles.columnHeaderButton} onClick={deleteColumn}>

@@ -20,3 +20,10 @@ export interface IDeleteCard extends IAction {
 export interface IDeleteColumn extends IAction {
   payload: string;
 }
+
+export interface IEditColumn extends IAction {
+  payload: {
+    id: string;
+    title: string;
+  };
+}
