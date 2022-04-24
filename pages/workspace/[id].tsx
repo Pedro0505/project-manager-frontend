@@ -2,10 +2,12 @@ import axios, { AxiosResponse } from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
 import Board from '../../components/Board';
 import { getToken } from '../../helpers';
 import { getWorkspace } from '../../helpers/fetch';
 import { ICard, IWorkspace, IWorkspaceCreate } from '../../interfaces';
+import store from '../../redux/store';
 
 function WorkspaceId() {
   const [workspace, setWorkspace] = useState<IWorkspace>();
@@ -66,26 +68,28 @@ function WorkspaceId() {
         </title>
       </Head>
       <main>
-        {!isCreate ? (
-          <button onClick={() => setIsCreate(true)} type="button">
-            Criar Coluna
-          </button>
-        ) : (
-          <>
-            <input type="text" onChange={({ target }) => setWorkspaceName(target.value)} />
-            <button type="button" onMouseDown={createColumn}>
+        <Provider store={store}>
+          {!isCreate ? (
+            <button onClick={() => setIsCreate(true)} type="button">
               Criar Coluna
             </button>
-            <button type="button" onClick={() => setIsCreate(false)}>
-              X
-            </button>
-          </>
-        )}
-        {workspace?.name}
-        <div>
-          {/* turn into laoding */}
-          {router.query.id && <Board workspaceId={router.query.id as string} />}
-        </div>
+          ) : (
+            <>
+              <input type="text" onChange={({ target }) => setWorkspaceName(target.value)} />
+              <button type="button" onMouseDown={createColumn}>
+                Criar Coluna
+              </button>
+              <button type="button" onClick={() => setIsCreate(false)}>
+                X
+              </button>
+            </>
+          )}
+          {workspace?.name}
+          <div>
+            {/* turn into laoding */}
+            {router.query.id && <Board workspaceId={router.query.id as string} />}
+          </div>
+        </Provider>
       </main>
     </div>
   );
