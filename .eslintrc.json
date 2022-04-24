@@ -2,9 +2,10 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "node": true
+    "node": true,
+    "cypress/globals": true
   },
-  "extends": ["next/core-web-vitals", "plugin:react/recommended", "airbnb"],
+  "extends": ["next/core-web-vitals", "plugin:react/recommended", "airbnb", "plugin:cypress/recommended"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -13,7 +14,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint", "cypress"],
   "rules": {
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
