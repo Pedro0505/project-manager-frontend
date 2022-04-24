@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   getBoardData,
   moveCardsBetweenColumn,
@@ -9,6 +10,7 @@ import {
 import { IBoardData, ICard } from '../interfaces';
 import Column from './Column';
 import style from '../styles/board.module.css';
+import { initialFetch } from '../redux/actions';
 
 interface PropTypes {
   workspaceId: string;
@@ -95,17 +97,19 @@ const onDragEnd = async (
 
 function Board({ workspaceId }: PropTypes) {
   const [boardData, setBoardData] = useState<IBoardData>({ columns: {}, columnsOrder: [] });
+  const data = useSelector<IBoardData, IBoardData>((state) => state);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log('Fetching board data');
 
-    const fetchColumns = async () => {
-      const fetchedColumns = await getBoardData(workspaceId);
-      setBoardData(fetchedColumns);
+    const fetchData = async () => {
+      const fetchedData = await getBoardData(workspaceId);
+      dispatch(initialFetch(fetchedData));
     };
 
-    fetchColumns();
-  }, [workspaceId]);
+    fetchData();
+  }, [workspaceId, dispatch]);
 
   const removeColumn = (columnId: string) => {
     const { columns, columnsOrder } = { ...boardData };
@@ -129,10 +133,10 @@ function Board({ workspaceId }: PropTypes) {
       <Droppable droppableId="all-columns" direction="horizontal" type="COLUMN">
         {(provided) => (
           <div className={style.board} {...provided.droppableProps} ref={provided.innerRef}>
-            {boardData.columnsOrder.map((columnId, index) => (
+            {data.columnsOrder.map((columnId, index) => (
               <Column
                 key={columnId}
-                columnData={boardData.columns[columnId]}
+                columnData={data.columns[columnId]}
                 index={index}
                 removeColumn={removeColumn}
                 addCard={addCard}
