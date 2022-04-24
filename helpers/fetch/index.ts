@@ -1,5 +1,7 @@
 export * from './createCard';
+export * from './deleteCard';
 export * from './deleteColumn';
+export * from './editCardContent';
 export * from './editColumnName';
 export * from './getBoardData';
 export * from './getWorkspace';
