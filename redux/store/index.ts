@@ -1,9 +1,10 @@
 import { composeWithDevTools } from '@redux-devtools/extension';
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
 import reducer from '../reducer';
 
 /* eslint-disable no-underscore-dangle */
-const store = createStore(reducer, composeWithDevTools());
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 /* eslint-enable */
 
 export default store;

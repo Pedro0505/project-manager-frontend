@@ -9,11 +9,10 @@ import ColumnFooter from './components/ColumnFooter';
 interface PropTypes {
   columnData: IColumn;
   index: number;
-  removeColumn: (columnId: string) => void;
   addCard: (card: ICard) => void;
 }
 
-function Column({ columnData: { id, title, cards }, index, removeColumn, addCard }: PropTypes) {
+function Column({ columnData: { id, title, cards }, index, addCard }: PropTypes) {
   return (
     <Draggable draggableId={id} index={index}>
       {(dragProvided) => (
@@ -25,7 +24,6 @@ function Column({ columnData: { id, title, cards }, index, removeColumn, addCard
           <ColumnHeader
             id={id}
             title={title}
-            removeColumn={removeColumn}
             dragHandleProps={dragProvided.dragHandleProps}
           />
           <Droppable droppableId={id} type="CARD">

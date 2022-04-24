@@ -1,6 +1,12 @@
 import { IBoardData } from '../../interfaces';
-import { DELETE_CARD, EDIT_CARD, INITIAL_FETCH } from '../actions';
-import { IAction, IDeleteCard, IEditCard, IInitialFetch } from '../actions/interfaces';
+import { DELETE_CARD, DELETE_COLUMN, EDIT_CARD, INITIAL_FETCH } from '../actions';
+import {
+  IAction,
+  IDeleteCard,
+  IDeleteColumn,
+  IEditCard,
+  IInitialFetch,
+} from '../actions/interfaces';
 
 const initialState: IBoardData = {
   columns: {},
@@ -43,6 +49,16 @@ const reducer = (state: IBoardData = initialState, action: IAction): IBoardData 
       columns[payload.columnId].cards.splice(cardToDeleteIndex, 1);
 
       return { columns, columnsOrder };
+    }
+
+    case DELETE_COLUMN: {
+      const { payload } = action as IDeleteColumn;
+      const { columns, columnsOrder } = { ...state };
+
+      delete columns[payload];
+      const newColumnsOrder = columnsOrder.filter((id) => id !== payload);
+
+      return { columns, columnsOrder: newColumnsOrder };
     }
 
     default:

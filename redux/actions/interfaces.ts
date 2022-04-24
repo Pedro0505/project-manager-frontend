@@ -16,3 +16,7 @@ export interface IEditCard extends IAction {
 export interface IDeleteCard extends IAction {
   payload: ICard;
 }
+
+export interface IDeleteColumn extends IAction {
+  payload: string;
+}

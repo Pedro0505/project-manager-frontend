@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  getBoardData,
-  moveCardsBetweenColumn,
-  moveCardsSameColumn,
-  moveColumns,
-} from '../helpers/fetch';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
+import { moveCardsBetweenColumn, moveCardsSameColumn, moveColumns } from '../helpers/fetch';
 import { IBoardData, ICard } from '../interfaces';
 import Column from './Column';
 import style from '../styles/board.module.css';
-import { initialFetch } from '../redux/actions';
+import * as actions from '../redux/actions';
 
 interface PropTypes {
   workspaceId: string;
@@ -98,28 +95,11 @@ const onDragEnd = async (
 function Board({ workspaceId }: PropTypes) {
   const [boardData, setBoardData] = useState<IBoardData>({ columns: {}, columnsOrder: [] });
   const data = useSelector<IBoardData, IBoardData>((state) => state);
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<IBoardData, any, AnyAction> = useDispatch();
 
   useEffect(() => {
-    console.log('Fetching board data');
-
-    const fetchData = async () => {
-      const fetchedData = await getBoardData(workspaceId);
-      dispatch(initialFetch(fetchedData));
-    };
-
-    fetchData();
+    dispatch(actions.initialFetch(workspaceId));
   }, [workspaceId, dispatch]);
-
-  const removeColumn = (columnId: string) => {
-    const { columns, columnsOrder } = { ...boardData };
-
-    delete columns[columnId];
-    const newColumnsOrder = columnsOrder.filter((id) => columnId !== id);
-    console.log('updated state', { columns, columnsOrder });
-
-    setBoardData({ columns, columnsOrder: newColumnsOrder });
-  };
 
   const addCard = (card: ICard) => {
     const { columns, columnsOrder } = { ...boardData };
@@ -138,7 +118,6 @@ function Board({ workspaceId }: PropTypes) {
                 key={columnId}
                 columnData={data.columns[columnId]}
                 index={index}
-                removeColumn={removeColumn}
                 addCard={addCard}
               />
             ))}

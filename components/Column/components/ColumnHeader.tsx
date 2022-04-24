@@ -3,30 +3,34 @@
 import React, { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { MdDelete, MdWarning } from 'react-icons/md';
-import { editColumnName } from '../../../helpers/fetch';
+import { useDispatch } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
 import * as fetch from '../../../helpers/fetch';
+import * as actions from '../../../redux/actions';
 import styles from '../../../styles/column.module.css';
+import { IBoardData } from '../../../interfaces';
 
 type PropTypes = {
   id: string;
   title: string;
   dragHandleProps: DraggableProvidedDragHandleProps | undefined;
-  removeColumn: (columnId: string) => void;
 };
 
-function ColumnHeader({ id, title, dragHandleProps, removeColumn }: PropTypes) {
+function ColumnHeader({ id, title, dragHandleProps }: PropTypes) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [columnTitleBackup, setColumnTitleBackup] = useState<string>(title);
   const [columnTitleEditing, setColumnTitleEditing] = useState<string>(title);
   const [canDelete, setCanDelete] = useState<boolean>(false);
   const editInputReference = useRef<HTMLInputElement>(null);
+  const dispatch: ThunkDispatch<IBoardData, any, AnyAction> = useDispatch();
 
   useEffect(() => {
     editInputReference.current?.focus();
   });
 
   const editTitle = async () => {
-    await editColumnName(id, columnTitleEditing);
+    await fetch.editColumnName(id, columnTitleEditing);
 
     setColumnTitleBackup(columnTitleEditing);
     setIsEditing(false);
@@ -43,11 +47,7 @@ function ColumnHeader({ id, title, dragHandleProps, removeColumn }: PropTypes) {
   };
 
   const deleteColumn = async () => {
-    if (canDelete) {
-      // se for usar redux, mover o remove column para dentro do delete column
-      fetch.deleteColumn(id);
-      removeColumn(id);
-    }
+    if (canDelete) dispatch(actions.deleteColumn(id));
 
     setCanDelete(true);
   };
