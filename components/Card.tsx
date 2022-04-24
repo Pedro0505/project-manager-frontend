@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { FocusEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
+import { MdDelete, MdEdit, MdWarning } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import * as fetch from '../helpers/fetch';
 import { ICard } from '../interfaces';
+import * as actions from '../redux/actions';
 import styles from '../styles/card.module.css';
 
 interface PropTypes {
@@ -8,42 +12,104 @@ interface PropTypes {
   cardIndex: number;
 }
 
-function Card({ cardData: { id, content }, cardIndex }: PropTypes) {
-  // const [confirmDelete, setConfirmDelete] = useState<boolean>(true);
-  // const [keyInterval, setKeyInterval] = useState<number>(0);
+const maxLength = 190;
 
-  // const deleteCard = async () => {
-  //   if (!confirmDelete) {
-  //     const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/card/${id}`;
+function Card({ cardData: { id, content, columnId }, cardIndex }: PropTypes) {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [newContent, setNewContent] = useState<string>(content);
+  const [canDelete, setCanDelete] = useState<boolean>(false);
+  const createInputReference = useRef<HTMLTextAreaElement>(null);
+  const dispatch = useDispatch();
 
-  //     await axios.delete(endpoint, { headers: { Authorization: getToken() as string } });
+  useEffect(() => {
+    createInputReference.current?.focus();
+  });
 
-  //     setCardList((prev) => {
-  //       const filtered = prev.filter(({ id }) => cardId !== id);
+  useEffect(() => {
+    document.body.style.pointerEvents = isEditing ? 'none' : 'auto';
+  }, [isEditing]);
 
-  //       return filtered;
-  //     });
-  //   }
+  useEffect(() => {
+    const reference = setTimeout(() => setCanDelete(false), 3000);
 
-  //   setConfirmDelete(false);
-  //   const myKey = setTimeout(() => setConfirmDelete(true), 5000);
-  //   setKeyInterval(myKey as unknown as number);
-  // };
+    return () => clearTimeout(reference);
+  }, [canDelete]);
 
-  // useEffect(() => () => {
-  //   clearTimeout(keyInterval);
-  // }, [keyInterval]);
+  const deleteCard = async () => {
+    if (canDelete) {
+      fetch.deleteCard({ id, columnId, content });
+      dispatch(actions.deleteCard({ id, columnId, content }));
+    }
+
+    setCanDelete(true);
+  };
+
+  const editCard = async () => {
+    const promise = fetch.editCardContent({ id, columnId, content: newContent });
+
+    setNewContent(content);
+    setIsEditing(false);
+
+    dispatch(actions.editCard(await promise));
+  };
+
+  const cancelEditCard = () => {
+    setNewContent(content);
+    setIsEditing(false);
+  };
+
+  const handleBlur = (event: FocusEvent<HTMLTextAreaElement>) => {
+    if (event.relatedTarget?.id === 'edit-card-confirm-button') return;
+
+    cancelEditCard();
+  };
+
+  const handleKeyboard = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter') editCard();
+    if (event.key === 'Escape') cancelEditCard();
+  };
 
   return (
     <Draggable draggableId={id} index={cardIndex}>
       {(provided, snapshot) => (
         <li
-          className={`${styles.card} ${snapshot.isDragging ? styles.cardDragging : ''}`}
+          className={styles.cardContainer}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div className={styles.cardContent}>{content}</div>
+          {isEditing ? (
+            <div className={styles.highlight}>
+              <div className={styles.cardTextAreaContainer}>
+                <textarea
+                  ref={createInputReference}
+                  value={newContent}
+                  maxLength={190}
+                  onChange={({ target }) => setNewContent(target.value)}
+                  onBlur={handleBlur}
+                  onKeyDown={handleKeyboard}
+                />
+                <span>{maxLength - content.length}</span>
+              </div>
+              <button id="edit-card-confirm-button" type="button" onClick={editCard}>
+                Confirmar
+              </button>
+            </div>
+          ) : (
+            <div className={`${styles.card} ${snapshot.isDragging ? styles.cardDragging : ''}`}>
+              <button type="button" className={styles.deleteButton} onClick={deleteCard}>
+                {canDelete ? <MdWarning size="1rem" /> : <MdDelete size="1rem" />}
+              </button>
+              <button
+                className={styles.editButton}
+                type="button"
+                onClick={() => setIsEditing(true)}
+              >
+                <MdEdit />
+              </button>
+              <div className={styles.cardContent}>{content}</div>
+            </div>
+          )}
         </li>
       )}
     </Draggable>
