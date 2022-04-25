@@ -1,13 +1,7 @@
 import { IBoardData } from '../../interfaces';
 import { DELETE_CARD, DELETE_COLUMN, EDIT_CARD, EDIT_COLUMN, INITIAL_FETCH } from '../actions';
-import {
-  IAction,
-  IDeleteCard,
-  IDeleteColumn,
-  IEditCard,
-  IEditColumn,
-  IInitialFetch,
-} from '../actions/interfaces';
+import { IAction } from '../actions/interfaces';
+import * as utils from './utils';
 
 const initialState: IBoardData = {
   columns: {},
@@ -16,60 +10,20 @@ const initialState: IBoardData = {
 
 const reducer = (state: IBoardData = initialState, action: IAction): IBoardData => {
   switch (action.type) {
-    case INITIAL_FETCH: {
-      const { payload } = action as IInitialFetch;
+    case INITIAL_FETCH:
+      return action.payload as IBoardData;
 
-      return payload;
-    }
+    case EDIT_CARD:
+      return utils.editCard(action.payload, state);
 
-    case EDIT_CARD: {
-      const { payload } = action as IEditCard;
-      const cardsClone = [...state.columns[payload.columnId].cards];
-      const cardToEditIndex = cardsClone.findIndex(({ id }) => payload.id === id);
-      cardsClone[cardToEditIndex] = payload;
+    case DELETE_CARD:
+      return utils.deleteCard(action.payload, state);
 
-      return {
-        ...state,
-        columns: {
-          ...state.columns,
-          [payload.columnId]: {
-            ...state.columns[payload.columnId],
-            cards: cardsClone,
-          },
-        },
-      };
-    }
+    case DELETE_COLUMN:
+      return utils.deleteColumn(action.payload, state);
 
-    case DELETE_CARD: {
-      const { payload } = action as IDeleteCard;
-      const { columns, columnsOrder } = { ...state };
-
-      const cardToDeleteIndex = columns[payload.columnId].cards.findIndex(
-        ({ id }) => payload.id === id,
-      );
-      columns[payload.columnId].cards.splice(cardToDeleteIndex, 1);
-
-      return { columns, columnsOrder };
-    }
-
-    case DELETE_COLUMN: {
-      const { payload } = action as IDeleteColumn;
-      const { columns, columnsOrder } = { ...state };
-
-      delete columns[payload];
-      const newColumnsOrder = columnsOrder.filter((id) => id !== payload);
-
-      return { columns, columnsOrder: newColumnsOrder };
-    }
-
-    case EDIT_COLUMN: {
-      const { payload } = action as IEditColumn;
-      const { columns, columnsOrder } = { ...state };
-
-      columns[payload.id].title = payload.title;
-
-      return { columns, columnsOrder };
-    }
+    case EDIT_COLUMN:
+      return utils.editColumn(action.payload, state);
 
     default:
       return state;
