@@ -1,3 +1,4 @@
+import { DropResult } from 'react-beautiful-dnd';
 import { Dispatch } from 'redux';
 import * as fetch from '../../helpers/fetch';
 import { IBoardData, ICard, ICardCreateRequest } from '../../interfaces';
@@ -33,6 +34,11 @@ const deleteColumnAction = (payload: string): IDeleteColumn => ({
 
 const editColumnAction = (payload: { id: string; title: string }): IEditColumn => ({
   type: ActionTypes.EDIT_COLUMN,
+  payload,
+});
+
+const moveColumnsAction = (payload: DropResult) => ({
+  type: ActionTypes.MOVE_COLUMNS,
   payload,
 });
 
@@ -102,3 +108,17 @@ export const editColumn = (columnId: string, newTitle: string) => async (dispatc
     console.error('Edit column fail', error);
   }
 };
+
+export const moveColumns = (dropResult: DropResult) => (
+  async (dispatch: Dispatch, getState: () => IBoardData) => {
+    dispatch(moveColumnsAction(dropResult));
+    const newColumnsOrder = getState().columnsOrder;
+
+    try {
+      await fetch.moveColumns(newColumnsOrder);
+      console.log('Move column success');
+    } catch (error) {
+      console.error('Move column fail', error);
+    }
+  }
+);

@@ -28,6 +28,9 @@ const reducer = (state: IBoardData = initialState, action: IAction): IBoardData 
     case ActionTypes.EDIT_COLUMN:
       return utils.editColumn(action.payload, state);
 
+    case ActionTypes.MOVE_COLUMNS:
+      return utils.moveColumns(action.payload, state);
+
     default:
       return state;
   }

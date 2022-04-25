@@ -6,6 +6,7 @@ enum ActionTypes {
   DELETE_CARD,
   DELETE_COLUMN,
   EDIT_COLUMN,
+  MOVE_COLUMNS,
 }
 
 export default ActionTypes;
