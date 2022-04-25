@@ -102,8 +102,15 @@ function Board({ workspaceId }: PropTypes) {
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
+    const { source, destination, type } = result;
 
-    if (result.type === 'COLUMN') dispatch(actions.moveColumns(result));
+    if (type === 'COLUMN') dispatch(actions.moveColumns(result));
+
+    if (type === 'CARD') {
+      if (source.droppableId === destination.droppableId) {
+        dispatch(actions.moveCardsSameColumn(result));
+      }
+    }
   };
 
   return (
