@@ -4,17 +4,19 @@ import { IBoardData, ICard } from '../../interfaces';
 import ActionTypes from './actionTypes';
 import { IDeleteCard, IDeleteColumn, IEditCard, IEditColumn, IInitialFetch } from './interfaces';
 
+// action creators
+
 const initialFetchAction = (payload: IBoardData): IInitialFetch => ({
   type: ActionTypes.INITIAL_FETCH,
   payload,
 });
 
-export const editCard = (payload: ICard): IEditCard => ({
+const editCardAction = (payload: ICard): IEditCard => ({
   type: ActionTypes.EDIT_CARD,
   payload,
 });
 
-export const deleteCard = (payload: ICard): IDeleteCard => ({
+const deleteCardAction = (payload: ICard): IDeleteCard => ({
   type: ActionTypes.DELETE_CARD,
   payload,
 });
@@ -29,9 +31,35 @@ const editColumnAction = (payload: { id: string; title: string }): IEditColumn =
   payload,
 });
 
+// action creators com thunk
+
 export const initialFetch = (workspaceId: string) => async (dispatch: Dispatch) => {
   const boardData = await fetch.getBoardData(workspaceId);
   dispatch(initialFetchAction(boardData));
+};
+
+export const editCard = (card: ICard) => async (dispatch: Dispatch) => {
+  const promise = fetch.editCardContent(card);
+  dispatch(editCardAction(card));
+
+  try {
+    await promise;
+    console.log('Edit card success');
+  } catch (error) {
+    console.error('Edit card fail', error);
+  }
+};
+
+export const deleteCard = (card: ICard) => async (dispatch: Dispatch) => {
+  const promise = fetch.deleteCard(card);
+  dispatch(deleteCardAction(card));
+
+  try {
+    await promise;
+    console.log('Delete card success');
+  } catch (error) {
+    console.error('Delete card fail', error);
+  }
 };
 
 export const deleteColumn = (columnId: string) => async (dispatch: Dispatch) => {

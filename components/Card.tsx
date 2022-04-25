@@ -2,8 +2,9 @@ import React, { FocusEvent, KeyboardEvent, useEffect, useRef, useState } from 'r
 import { Draggable } from 'react-beautiful-dnd';
 import { MdDelete, MdEdit, MdWarning } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
-import * as fetch from '../helpers/fetch';
-import { ICard } from '../interfaces';
+import { AnyAction } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { IBoardData, ICard } from '../interfaces';
 import * as actions from '../redux/actions';
 import styles from '../styles/card.module.css';
 
@@ -19,7 +20,7 @@ function Card({ cardData: { id, content, columnId }, cardIndex }: PropTypes) {
   const [newContent, setNewContent] = useState<string>(content);
   const [canDelete, setCanDelete] = useState<boolean>(false);
   const createInputReference = useRef<HTMLTextAreaElement>(null);
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<IBoardData, any, AnyAction> = useDispatch();
 
   useEffect(() => {
     createInputReference.current?.focus();
@@ -36,21 +37,16 @@ function Card({ cardData: { id, content, columnId }, cardIndex }: PropTypes) {
   }, [canDelete]);
 
   const deleteCard = async () => {
-    if (canDelete) {
-      fetch.deleteCard({ id, columnId, content });
-      dispatch(actions.deleteCard({ id, columnId, content }));
-    }
+    if (canDelete) dispatch(actions.deleteCard({ id, columnId, content }));
 
     setCanDelete(true);
   };
 
   const editCard = async () => {
-    const promise = fetch.editCardContent({ id, columnId, content: newContent });
+    dispatch(actions.editCard({ id, columnId, content }));
 
     setNewContent(content);
     setIsEditing(false);
-
-    dispatch(actions.editCard(await promise));
   };
 
   const cancelEditCard = () => {
