@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 import { moveCardsBetweenColumn, moveCardsSameColumn, moveColumns } from '../helpers/fetch';
-import { IBoardData, ICard } from '../interfaces';
+import { IBoardData } from '../interfaces';
 import Column from './Column';
 import style from '../styles/board.module.css';
 import * as actions from '../redux/actions';
@@ -101,25 +101,13 @@ function Board({ workspaceId }: PropTypes) {
     dispatch(actions.initialFetch(workspaceId));
   }, [workspaceId, dispatch]);
 
-  const addCard = (card: ICard) => {
-    const { columns, columnsOrder } = { ...boardData };
-    columns[card.columnId].cards.push(card);
-
-    setBoardData({ columns, columnsOrder });
-  };
-
   return (
     <DragDropContext onDragEnd={(result) => onDragEnd(result, boardData, setBoardData)}>
       <Droppable droppableId="all-columns" direction="horizontal" type="COLUMN">
         {(provided) => (
           <div className={style.board} {...provided.droppableProps} ref={provided.innerRef}>
             {data.columnsOrder.map((columnId, index) => (
-              <Column
-                key={columnId}
-                columnData={data.columns[columnId]}
-                index={index}
-                addCard={addCard}
-              />
+              <Column key={columnId} columnData={data.columns[columnId]} index={index} />
             ))}
             {provided.placeholder}
           </div>

@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import * as fetch from '../../helpers/fetch';
-import { IBoardData, ICard } from '../../interfaces';
+import { IBoardData, ICard, ICardCreateRequest } from '../../interfaces';
 import ActionTypes from './actionTypes';
 import { IDeleteCard, IDeleteColumn, IEditCard, IEditColumn, IInitialFetch } from './interfaces';
 
@@ -8,6 +8,11 @@ import { IDeleteCard, IDeleteColumn, IEditCard, IEditColumn, IInitialFetch } fro
 
 const initialFetchAction = (payload: IBoardData): IInitialFetch => ({
   type: ActionTypes.INITIAL_FETCH,
+  payload,
+});
+
+const createCardAction = (payload: ICard) => ({
+  type: ActionTypes.CREATE_CARD,
   payload,
 });
 
@@ -47,6 +52,18 @@ export const editCard = (card: ICard) => async (dispatch: Dispatch) => {
     console.log('Edit card success');
   } catch (error) {
     console.error('Edit card fail', error);
+  }
+};
+
+export const createCard = (newCard: ICardCreateRequest) => async (dispatch: Dispatch) => {
+  const promise = fetch.createCard(newCard);
+
+  try {
+    const result = await promise;
+    dispatch(createCardAction(result));
+    console.log('Create card success');
+  } catch (error) {
+    console.error('Create card fail', error);
   }
 };
 

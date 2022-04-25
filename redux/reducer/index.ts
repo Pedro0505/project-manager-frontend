@@ -13,6 +13,9 @@ const reducer = (state: IBoardData = initialState, action: IAction): IBoardData 
     case ActionTypes.INITIAL_FETCH:
       return action.payload as IBoardData;
 
+    case ActionTypes.CREATE_CARD:
+      return utils.createCard(action.payload, state);
+
     case ActionTypes.EDIT_CARD:
       return utils.editCard(action.payload, state);
 

@@ -1,19 +1,23 @@
 import React, { FocusEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { MdAdd, MdOutlineClose } from 'react-icons/md';
-import * as fetch from '../../../helpers/fetch';
-import { ICard } from '../../../interfaces';
+import { useDispatch } from 'react-redux';
+import { AnyAction } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+import * as actions from '../../../redux/actions';
+import { IBoardData } from '../../../interfaces';
 import styles from '../../../styles/column.module.css';
 
 interface PropTypes {
   id: string;
-  addCard: (card: ICard) => void;
 }
 
-function ColumnFooter({ id, addCard }: PropTypes) {
+const maxLength = 190;
+
+function ColumnFooter({ id }: PropTypes) {
   const [isCreatingCard, setIsCreatingCard] = useState<boolean>(false);
   const [content, setContent] = useState<string>('');
   const createInputReference = useRef<HTMLTextAreaElement>(null);
-  const maxLength = 190;
+  const dispatch: ThunkDispatch<IBoardData, any, AnyAction> = useDispatch();
 
   useEffect(() => {
     createInputReference.current?.focus();
@@ -34,8 +38,7 @@ function ColumnFooter({ id, addCard }: PropTypes) {
     setContent('');
     setIsCreatingCard(false);
 
-    const newCard = await fetch.createCard({ columnId: id, content: content.trim() });
-    addCard(newCard);
+    dispatch(actions.createCard({ columnId: id, content: content.trim() }));
   };
 
   const handleKeyboard = (event: KeyboardEvent<HTMLTextAreaElement>) => {
