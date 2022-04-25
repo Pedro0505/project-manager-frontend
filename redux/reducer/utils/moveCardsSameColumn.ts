@@ -12,24 +12,3 @@ export const moveCardsSameColumn = (payload: DropResult, state: IBoardData): IBo
 
   return { columns, columnsOrder };
 };
-
-// const column = boardData.columns[source.droppableId];
-// const copiedItems = [...column.cards];
-// const [removed] = copiedItems.splice(source.index, 1);
-// copiedItems.splice(destination.index, 0, removed);
-
-// setBoardData({
-//   ...boardData,
-//   columns: {
-//     ...boardData.columns,
-//     [source.droppableId]: {
-//       ...column,
-//       cards: copiedItems,
-//     },
-//   },
-// });
-
-// await moveCardsSameColumn(copiedItems);
-// }
-
-// break;

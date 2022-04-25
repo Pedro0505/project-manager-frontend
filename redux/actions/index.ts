@@ -47,6 +47,11 @@ const moveCardsSameColumnAction = (payload: DropResult) => ({
   payload,
 });
 
+const moveCardsBetweenColumnsAction = (payload: DropResult) => ({
+  type: ActionTypes.MOVE_CARDS_BETWEEN_COLUMNS,
+  payload,
+});
+
 // action creators com thunk
 
 export const initialFetch = (workspaceId: string) => async (dispatch: Dispatch) => {
@@ -137,9 +142,25 @@ export const moveCardsSameColumn = (dropResult: DropResult) => (
 
     try {
       await fetch.moveCardsSameColumn(newCardsOrder);
-      console.log('Move column success');
+      console.log('Move cards in same column success');
     } catch (error) {
-      console.error('Move column fail', error);
+      console.error('Move cards in same column fail', error);
+    }
+  }
+);
+
+export const moveCardsBetweenColumns = (dropResult: DropResult) => (
+  async (dispatch: Dispatch, getState: () => IBoardData) => {
+    dispatch(moveCardsBetweenColumnsAction(dropResult));
+
+    const columnId = dropResult.destination!.droppableId;
+    const newCardsOrder = getState().columns[columnId].cards;
+
+    try {
+      await fetch.moveCardsBetweenColumn(newCardsOrder);
+      console.log('Move cards between columns success');
+    } catch (error) {
+      console.error('Move cards between columns success fail', error);
     }
   }
 );

@@ -1,7 +1,7 @@
 import { IBoardData, ICard } from '../../interfaces';
 
 export interface IAction {
-  type: number;
+  type: string;
   payload: any;
 }
 

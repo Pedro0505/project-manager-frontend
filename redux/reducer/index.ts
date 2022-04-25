@@ -34,6 +34,9 @@ const reducer = (state: IBoardData = initialState, action: IAction): IBoardData 
     case ActionTypes.MOVE_CARDS_SAME_COLUMN:
       return utils.moveCardsSameColumn(action.payload, state);
 
+    case ActionTypes.MOVE_CARDS_BETWEEN_COLUMNS:
+      return utils.moveCardsBetweenColumns(action.payload, state);
+
     default:
       return state;
   }
