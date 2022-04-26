@@ -43,7 +43,7 @@ function Card({ cardData: { id, content, columnId }, cardIndex }: PropTypes) {
   };
 
   const editCard = async () => {
-    dispatch(actions.editCard({ id, columnId, content }));
+    dispatch(actions.editCard({ id, columnId, content: newContent }));
 
     setNewContent(content);
     setIsEditing(false);
