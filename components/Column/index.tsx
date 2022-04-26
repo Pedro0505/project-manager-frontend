@@ -1,6 +1,6 @@
 import React from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { ICard, IColumn } from '../../interfaces';
+import { IColumn } from '../../interfaces';
 import Card from '../Card';
 import styles from '../../styles/column.module.css';
 import ColumnHeader from './components/ColumnHeader';
@@ -9,11 +9,9 @@ import ColumnFooter from './components/ColumnFooter';
 interface PropTypes {
   columnData: IColumn;
   index: number;
-  removeColumn: (columnId: string) => void;
-  addCard: (card: ICard) => void;
 }
 
-function Column({ columnData: { id, title, cards }, index, removeColumn, addCard }: PropTypes) {
+function Column({ columnData: { id, title, cards }, index }: PropTypes) {
   return (
     <Draggable draggableId={id} index={index}>
       {(dragProvided) => (
@@ -22,12 +20,7 @@ function Column({ columnData: { id, title, cards }, index, removeColumn, addCard
           {...dragProvided.draggableProps}
           ref={dragProvided.innerRef}
         >
-          <ColumnHeader
-            id={id}
-            title={title}
-            removeColumn={removeColumn}
-            dragHandleProps={dragProvided.dragHandleProps}
-          />
+          <ColumnHeader id={id} title={title} dragHandleProps={dragProvided.dragHandleProps} />
           <Droppable droppableId={id} type="CARD">
             {(provided) => (
               <ul ref={provided.innerRef} {...provided.droppableProps}>
@@ -38,7 +31,7 @@ function Column({ columnData: { id, title, cards }, index, removeColumn, addCard
               </ul>
             )}
           </Droppable>
-          <ColumnFooter id={id} addCard={addCard} />
+          <ColumnFooter id={id} />
         </section>
       )}
     </Draggable>

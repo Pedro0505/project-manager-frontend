@@ -1,3 +1,8 @@
+.cardContainer {
+  display: block;
+  list-style: none;
+}
+
 .card {
   background-color: #fefefe;
   border-top: 32px solid greenyellow;
@@ -5,13 +10,45 @@
   width: 100%;
   display: block;
   position: relative;
+  margin: 8px 0;
+}
+
+.highlight {
+  box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.8);
+  position: relative;
+  z-index: 9999;
+  pointer-events: auto;
+}
+
+.cardTextAreaContainer {
+  position: relative;
+}
+
+.cardTextAreaContainer textarea {
+  width: 100%;
+  resize: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  min-height: 60px;
+}
+
+.cardTextAreaContainer span {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.8;
 }
 
 .cardDragging {
   opacity: 0.5;
 }
 
-.card:hover .excludeButton,
+.card:hover .deleteButton,
 .card:hover .editButton {
   display: block;
 }
@@ -21,7 +58,7 @@
   font-size: 14px;
 }
 
-.excludeButton {
+.deleteButton {
   display: none;
   position: absolute;
   top: -28px;

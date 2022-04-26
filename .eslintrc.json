@@ -27,6 +27,8 @@
     "react/jsx-curly-spacing": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": ["error"],
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "default-param-last": "off",
+    "consistent-return": "off"
   }
 }

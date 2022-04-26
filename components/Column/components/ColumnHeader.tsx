@@ -3,37 +3,38 @@
 import React, { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { MdDelete, MdWarning } from 'react-icons/md';
-import { editColumnName } from '../../../helpers/fetch';
-import * as fetch from '../../../helpers/fetch';
+import { useDispatch } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
+import * as actions from '../../../redux/actions';
 import styles from '../../../styles/column.module.css';
+import { IBoardData } from '../../../interfaces';
 
 type PropTypes = {
   id: string;
   title: string;
   dragHandleProps: DraggableProvidedDragHandleProps | undefined;
-  removeColumn: (columnId: string) => void;
 };
 
-function ColumnHeader({ id, title, dragHandleProps, removeColumn }: PropTypes) {
+function ColumnHeader({ id, title, dragHandleProps }: PropTypes) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [columnTitleBackup, setColumnTitleBackup] = useState<string>(title);
-  const [columnTitleEditing, setColumnTitleEditing] = useState<string>(title);
+  const [newTitle, setNewTitle] = useState<string>(title);
   const [canDelete, setCanDelete] = useState<boolean>(false);
   const editInputReference = useRef<HTMLInputElement>(null);
+  const dispatch: ThunkDispatch<IBoardData, any, AnyAction> = useDispatch();
 
   useEffect(() => {
     editInputReference.current?.focus();
   });
 
   const editTitle = async () => {
-    await editColumnName(id, columnTitleEditing);
+    dispatch(actions.editColumn(id, newTitle));
 
-    setColumnTitleBackup(columnTitleEditing);
     setIsEditing(false);
   };
 
   const cancelEditTitle = () => {
-    setColumnTitleEditing(columnTitleBackup);
+    setNewTitle(title);
     setIsEditing(false);
   };
 
@@ -43,11 +44,7 @@ function ColumnHeader({ id, title, dragHandleProps, removeColumn }: PropTypes) {
   };
 
   const deleteColumn = async () => {
-    if (canDelete) {
-      // se for usar redux, mover o remove column para dentro do delete column
-      fetch.deleteColumn(id);
-      removeColumn(id);
-    }
+    if (canDelete) dispatch(actions.deleteColumn(id));
 
     setCanDelete(true);
   };
@@ -65,14 +62,14 @@ function ColumnHeader({ id, title, dragHandleProps, removeColumn }: PropTypes) {
           ref={editInputReference}
           type="text"
           className={styles.columnTitleInput}
-          value={columnTitleEditing}
-          onChange={({ target }) => setColumnTitleEditing(target.value)}
+          value={newTitle}
+          onChange={({ target }) => setNewTitle(target.value)}
           onBlur={cancelEditTitle}
           onKeyDown={handleKeyboard}
         />
       ) : (
         <h2 className={styles.columnTitle} onClick={() => setIsEditing(true)}>
-          {columnTitleEditing}
+          {title}
         </h2>
       )}
       <button type="button" className={styles.columnHeaderButton} onClick={deleteColumn}>
