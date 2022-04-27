@@ -1,4 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import './commands';
+import 'cypress-localstorage-commands';
 
 declare global {
   namespace Cypress {

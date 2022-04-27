@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "cy": "cypress run"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.7.0",
@@ -32,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "cypress": "^9.6.0",
+    "cypress-localstorage-commands": "^1.7.0",
     "eslint": "^8.12.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "12.1.0",
