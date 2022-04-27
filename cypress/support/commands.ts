@@ -40,4 +40,8 @@ Cypress.Commands.add('dragAndDrop', (subject: RegExp, target: RegExp) => {
   });
 });
 
+Cypress.Commands.add('getByTestId', (selector: string, ...args: any[]) => (
+  cy.get(`[data-testid=${selector}]`, ...args)
+));
+
 export {};

@@ -11,6 +11,7 @@ declare global {
        * @param target target card/column name regex.
        */
       dragAndDrop(source: RegExp, target: RegExp): void;
+      getByTestId(selector: string, ...args: any[]): Cypress.Chainable;
     }
   }
 }
