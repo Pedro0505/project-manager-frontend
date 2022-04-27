@@ -6,16 +6,23 @@ describe('E2E tests', () => {
       cy.get('#emailLogin').type(matheus.email);
       cy.get('#passwordLogin').type(matheus.password);
 
-      cy.contains('Login').click();
+      cy.intercept('GET', '/workspace').as('alias');
 
-      cy.saveLocalStorage();
-
-      cy.contains(/store manager/i).click();
+      cy.contains('Login')
+        .click()
+        .wait('@alias')
+        .then(() => {
+          cy.saveLocalStorage().then(() => {
+            cy.contains(/store manager/i).click();
+          });
+        });
     });
   });
 
   beforeEach(() => {
-    cy.restoreLocalStorage();
+    cy.restoreLocalStorage().then(() => {
+      cy.getLocalStorage('@project-manager/token').then((token) => cy.log(token!));
+    });
   });
 
   afterEach(() => {
@@ -43,10 +50,40 @@ describe('E2E tests', () => {
         cy.wrap(firstButton).click();
 
         cy.get('textarea').type('New Card');
-        cy.get('button').contains('Confirmar').click();
-
-        cy.get('li').contains('New Card').should('exist');
+        cy.get('button')
+          .contains('Confirmar')
+          .click()
+          .then(() => {
+            cy.contains('New Card').should('exist');
+          });
       });
+  });
+
+  it('Edit a card', () => {
+    cy.contains(/new card/i)
+      .parent()
+      .getByTestId('edit-card-new-card')
+      .should('be.hidden')
+      .invoke('show')
+      .should('be.visible')
+      .click();
+
+    cy.get('textarea').type('The ').type('{enter}');
+
+    cy.contains(/the new card/i).should('exist');
+  });
+
+  it('Delete a card', () => {
+    cy.contains(/the new card/i)
+      .parent()
+      .getByTestId('delete-card-the-new-card')
+      .should('be.hidden')
+      .invoke('show')
+      .should('be.visible')
+      .click()
+      .click();
+
+    cy.contains(/the new card/i).should('not.exist');
   });
 });
 
