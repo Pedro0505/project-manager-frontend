@@ -63,7 +63,7 @@ function ColumnFooter({ id }: PropTypes) {
           </div>
           <div className={styles.columnFooterInputButtonsContainer}>
             <button id="add-card-button" type="button" onClick={createCard}>
-              Adicionar card
+              Confirmar
             </button>
             <button type="button">
               <MdOutlineClose />
