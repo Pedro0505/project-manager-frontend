@@ -103,9 +103,9 @@ function Login() {
 
         return { firstName,
           lastName,
-          password: randomPassword,
+          password: randomPassword.slice(0, 15),
           email: userEmail,
-          uuid: randomPassword };
+          uuid: randomPassword.slice(0, 15) };
       };
 
       const registerAuth0 = async (userEmail: string, name: string) => {
@@ -169,7 +169,7 @@ function Login() {
       ) }
       <button className={ styles.loginBtn } type="submit">Login</button>
       <div>
-        <Link href="/api/auth/login?redirectTo=/workspace">
+        <Link href="/api/auth/login">
           <a className={ styles.githubLogin }>
             <AiFillGithub />
             <p>Entre com o GitHub</p>
