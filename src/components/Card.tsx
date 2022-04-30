@@ -4,6 +4,7 @@ import { MdDelete, MdEdit, MdWarning } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
+import { toDataTestId } from '../helpers';
 import { IBoardData, ICard } from '../interfaces';
 import * as actions from '../redux/actions';
 import styles from '../styles/card.module.css';
@@ -43,7 +44,7 @@ function Card({ cardData: { id, content, columnId }, cardIndex }: PropTypes) {
   };
 
   const editCard = async () => {
-    dispatch(actions.editCard({ id, columnId, content }));
+    dispatch(actions.editCard({ id, columnId, content: newContent }));
 
     setNewContent(content);
     setIsEditing(false);
@@ -93,11 +94,17 @@ function Card({ cardData: { id, content, columnId }, cardIndex }: PropTypes) {
             </div>
           ) : (
             <div className={`${styles.card} ${snapshot.isDragging ? styles.cardDragging : ''}`}>
-              <button type="button" className={styles.deleteButton} onClick={deleteCard}>
+              <button
+                type="button"
+                data-testid={`delete-card-${toDataTestId(content)}`}
+                className={styles.deleteButton}
+                onClick={deleteCard}
+              >
                 {canDelete ? <MdWarning size="1rem" /> : <MdDelete size="1rem" />}
               </button>
               <button
                 className={styles.editButton}
+                data-testid={`edit-card-${toDataTestId(content)}`}
                 type="button"
                 onClick={() => setIsEditing(true)}
               >
