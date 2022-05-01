@@ -22,6 +22,9 @@ const reducer = (state: IBoardData = initialState, action: IAction): IBoardData 
     case ActionTypes.DELETE_CARD:
       return utils.deleteCard(action.payload, state);
 
+    case ActionTypes.CREATE_COLUMN:
+      return utils.createColumn(action.payload, state);
+
     case ActionTypes.DELETE_COLUMN:
       return utils.deleteColumn(action.payload, state);
 

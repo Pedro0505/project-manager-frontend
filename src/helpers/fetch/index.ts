@@ -1,4 +1,5 @@
 export * from './createCard';
+export * from './createColumn';
 export * from './deleteCard';
 export * from './deleteColumn';
 export * from './editCardContent';

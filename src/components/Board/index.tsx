@@ -3,10 +3,11 @@ import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
-import { IBoardData } from '../interfaces';
-import Column from './Column';
-import style from '../styles/board.module.css';
-import * as actions from '../redux/actions';
+import { IBoardData } from '../../interfaces';
+import Column from '../Column';
+import styles from './styles.module.css';
+import * as actions from '../../redux/actions';
+import AddColumn from './components/AddColumnButton';
 
 interface PropTypes {
   workspaceId: string;
@@ -36,18 +37,21 @@ function Board({ workspaceId }: PropTypes) {
   };
 
   return (
-    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-      <Droppable droppableId="all-columns" direction="horizontal" type="COLUMN">
-        {(provided) => (
-          <div className={style.board} {...provided.droppableProps} ref={provided.innerRef}>
-            {boardData.columnsOrder.map((columnId, index) => (
-              <Column key={columnId} columnData={boardData.columns[columnId]} index={index} />
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <div className={styles.boardContainer}>
+      <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+        <Droppable droppableId="all-columns" direction="horizontal" type="COLUMN">
+          {(provided) => (
+            <div className={styles.board} {...provided.droppableProps} ref={provided.innerRef}>
+              {boardData.columnsOrder.map((columnId, index) => (
+                <Column key={columnId} columnData={boardData.columns[columnId]} index={index} />
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      <AddColumn workspaceId={workspaceId} />
+    </div>
   );
 }
 

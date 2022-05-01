@@ -1,5 +1,6 @@
 .column {
-  flex: 0 0 320px;
+  flex: 0 0 auto;
+  width: 280px;
   background-color: #eee;
   border-radius: 5px;
   padding: 12px;

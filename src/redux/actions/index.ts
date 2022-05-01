@@ -1,7 +1,7 @@
 import { DropResult } from 'react-beautiful-dnd';
 import { Dispatch } from 'redux';
 import * as fetch from '../../helpers/fetch';
-import { IBoardData, ICard, ICardCreateRequest } from '../../interfaces';
+import { IBoardData, ICard, ICardCreateRequest, IColumn } from '../../interfaces';
 import ActionTypes from './actionTypes';
 import { IDeleteCard, IDeleteColumn, IEditCard, IEditColumn, IInitialFetch } from './interfaces';
 
@@ -29,6 +29,11 @@ const deleteCardAction = (payload: ICard): IDeleteCard => ({
 
 const deleteColumnAction = (payload: string): IDeleteColumn => ({
   type: ActionTypes.DELETE_COLUMN,
+  payload,
+});
+
+const createColumnAction = (payload: IColumn) => ({
+  type: ActionTypes.CREATE_COLUMN,
   payload,
 });
 
@@ -104,6 +109,18 @@ export const deleteColumn = (columnId: string) => async (dispatch: Dispatch) => 
     console.log('Delete column success');
   } catch (error) {
     console.error('Delete column fail', error);
+  }
+};
+
+export const createColumn = (title: string, workspaceId: string) => async (dispatch: Dispatch) => {
+  const promise = fetch.createColumn({ title, workspaceId });
+
+  try {
+    const result = await promise;
+    dispatch(createColumnAction({ cards: [], ...result }));
+    console.log('Create column success');
+  } catch (error) {
+    console.error('Create column fail', error);
   }
 };
 
