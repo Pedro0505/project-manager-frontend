@@ -2,7 +2,7 @@ import React from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { IColumn } from '../../interfaces';
 import Card from '../Card';
-import styles from '../../styles/column.module.css';
+import styles from './styles.module.css';
 import ColumnHeader from './components/ColumnHeader';
 import ColumnFooter from './components/ColumnFooter';
 

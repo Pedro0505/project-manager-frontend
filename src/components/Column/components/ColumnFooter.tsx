@@ -5,7 +5,7 @@ import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import * as actions from '../../../redux/actions';
 import { IBoardData } from '../../../interfaces';
-import styles from '../../../styles/column.module.css';
+import styles from '../styles.module.css';
 
 interface PropTypes {
   id: string;

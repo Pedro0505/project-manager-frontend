@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 import * as actions from '../../../redux/actions';
-import styles from '../../../styles/column.module.css';
+import styles from '../styles.module.css';
 import { IBoardData } from '../../../interfaces';
 
 type PropTypes = {
