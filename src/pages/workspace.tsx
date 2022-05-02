@@ -3,8 +3,8 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import jwtDecode from 'jwt-decode';
 import { useRouter } from 'next/router';
-import { useSession, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { signOut, useSession } from 'next-auth/react';
 import styles from '../styles/workspace.module.css';
 import { getToken } from '../helpers';
 import { IWorkspace, IWorkspaceCreate, IWorkspaceCreateResponse, IWorkspaceResponse } from '../interfaces';
@@ -17,8 +17,8 @@ function Workspace() {
   const [isCreate, setIsCreate] = useState<boolean>(false);
   const [limitCreate, setLimitCreate] = useState<number>(0);
   const [workspaceName, setWorkspaceName] = useState<string>('');
-  const router = useRouter();
   const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     console.log('Fetching workspaces');
@@ -88,6 +88,11 @@ function Workspace() {
           </>
         )
       }
+      {
+        session && (
+          <button type="button" onClick={() => signOut()}>Sign out</button>
+        )
+      }
       <div className={ styles.mainContainerWorkspace }>
         <Head>
           <title>Project Manager | Workspace</title>
@@ -105,16 +110,7 @@ function Workspace() {
           }
         </main>
         {
-          session && (
-            <>
-              Signed in as
-              {session?.user?.email}
-              <br />
-              <button type="button" onClick={() => signOut()}>Sign out</button>
-            </>
-
-          )
-        }
+  }
       </div>
     </>
   );
