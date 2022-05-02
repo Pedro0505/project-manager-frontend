@@ -175,6 +175,13 @@ function Login() {
         <AiFillGithub />
         <p>Entre com o GitHub</p>
       </button>
+      <button
+        type="button"
+        onClick={() => signIn('google')}
+      >
+        <AiFillGithub />
+        <p>Entre com o Google</p>
+      </button>
     </form>
   );
 }
