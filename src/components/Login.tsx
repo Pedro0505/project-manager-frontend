@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { MdOutlineWarningAmber } from 'react-icons/md';
+import { FcGoogle } from 'react-icons/fc';
 import { signIn, useSession } from 'next-auth/react';
 import { v4 as uuid } from 'uuid';
 import { AiFillGithub } from 'react-icons/ai';
@@ -178,8 +179,9 @@ function Login() {
       <button
         type="button"
         onClick={() => signIn('google')}
+        className={ styles.googleLogin }
       >
-        <AiFillGithub />
+        <FcGoogle />
         <p>Entre com o Google</p>
       </button>
     </form>
