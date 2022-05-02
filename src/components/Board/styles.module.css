@@ -1,0 +1,38 @@
+.boardContainer {
+  display: flex;
+  gap: 16px;
+  margin: 64px 32px;
+}
+
+.board {
+  display: flex;
+  gap: 16px;
+}
+
+.addColumnContainer {
+  height: fit-content;
+  width: 280px;
+  min-width: 280px;
+}
+
+.addColumnButton {
+  background-color: #d2d2d2;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: start;
+  border-radius: 5px;
+  padding: 12px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  opacity: 0.8;
+}
+
+.addColumnButton:hover {
+  background-color: #d2d2d2;
+}
+
+.addColumnButton span {
+  font-size: 0.9rem;
+}

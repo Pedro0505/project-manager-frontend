@@ -1,0 +1,44 @@
+version: '3.9'
+services:
+  frontend:
+    build: .
+    ports:
+      - 3300:3000
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:3001
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'lsof', '-t', '-i:3000']
+      timeout: 10s
+      retries: 5
+  backend:
+    image: matheusg18/project-manager-be
+    ports:
+      - 3301:3001
+    depends_on:
+      pm-db:
+        condition: service_healthy
+    command: sh -c "npx prisma migrate dev --schema src/prisma/schema.test.prisma && npm start"
+    environment:
+      - NODE_ENV=test
+      - DATABASE_URL_TEST=mysql://root:123456@pm-db/project-manager-test?schema=public
+      - JWT_SECRET=20bf2315aa8fba365f91b02b3d3fe769
+    healthcheck:
+      test: ['CMD', 'lsof', '-t', '-i:3001']
+      timeout: 10s
+      retries: 5
+  pm-db:
+    image: mysql:8.0.21
+    ports:
+      - 3302:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    restart: 'always'
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      timeout: 10s
+      retries: 5
+    cap_add:
+      - SYS_NICE
