@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import styles from '../styles/workspace.module.css';
-import { getToken } from '../helpers';
+import { getToken, storeToken } from '../helpers';
 import { IWorkspace, IWorkspaceCreate, IWorkspaceCreateResponse, IWorkspaceResponse } from '../interfaces';
 import { ITokenData } from '../interfaces/Jwt';
 import Workpace from '../components/Workspace';
@@ -78,6 +78,11 @@ function Workspace() {
     }
   };
 
+  const handleLogout = () => {
+    storeToken('');
+    signOut({ callbackUrl: 'http://localhost:3000' });
+  };
+
   return (
     <>
       {
@@ -90,7 +95,7 @@ function Workspace() {
       }
       {
         session && (
-          <button type="button" onClick={() => signOut()}>Sign out</button>
+          <button type="button" onClick={ handleLogout }>Sign out</button>
         )
       }
       <div className={ styles.mainContainerWorkspace }>
