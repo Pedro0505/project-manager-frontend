@@ -3,6 +3,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import jwtDecode from 'jwt-decode';
 import { useRouter } from 'next/router';
+import { useSession, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import styles from '../styles/workspace.module.css';
 import { getToken } from '../helpers';
@@ -17,6 +18,7 @@ function Workspace() {
   const [limitCreate, setLimitCreate] = useState<number>(0);
   const [workspaceName, setWorkspaceName] = useState<string>('');
   const router = useRouter();
+  const { data: session } = useSession();
 
   useEffect(() => {
     console.log('Fetching workspaces');
@@ -102,6 +104,17 @@ function Workspace() {
             ))
           }
         </main>
+        {
+          session && (
+            <>
+              Signed in as
+              {session?.user?.email}
+              <br />
+              <button type="button" onClick={() => signOut()}>Sign out</button>
+            </>
+
+          )
+        }
       </div>
     </>
   );
