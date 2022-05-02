@@ -72,10 +72,11 @@
   background-color: #333333;
   justify-content: center;
   padding: 12px;
-  text-decoration: none;
   color: white;
   border-radius: 5px;
   margin-top: 50px;
+  cursor: pointer;
+  border: none;
 }
 
 .githubLogin p {

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { MdOutlineWarningAmber } from 'react-icons/md';
 import { signIn, useSession } from 'next-auth/react';
 import { v4 as uuid } from 'uuid';
+import { AiFillGithub } from 'react-icons/ai';
 import { storeToken } from '../helpers';
 import styles from '../styles/login.module.css';
 import { ILoginRequest, ILoginResponse, IRegisterUserRequest, IRegisterUserResponse, IUser } from '../interfaces';
@@ -166,7 +167,14 @@ function Login() {
         </div>
       ) }
       <button className={ styles.loginBtn } type="submit">Login</button>
-      <button type="button" onClick={() => signIn('github')}>Sign in</button>
+      <button
+        type="button"
+        className={ styles.githubLogin }
+        onClick={() => signIn('github')}
+      >
+        <AiFillGithub />
+        <p>Entre com o GitHub</p>
+      </button>
     </form>
   );
 }
