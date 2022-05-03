@@ -1,10 +1,13 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { useSession } from 'next-auth/react';
 import styles from '../styles/login.module.css';
 import Login from '../components/Login';
 import Register from '../components/Register';
 
 function Home() {
+  const { status } = useSession();
+
   return (
     <div>
       <Head>
@@ -14,8 +17,14 @@ function Home() {
       </Head>
 
       <main className={ styles.containerRegiterLogin }>
-        <Register />
-        <Login />
+        {
+          status === 'loading' ? <h1>Loading...</h1> : (
+            <>
+              <Register />
+              <Login />
+            </>
+          )
+        }
       </main>
     </div>
   );

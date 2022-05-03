@@ -4,8 +4,9 @@ import Head from 'next/head';
 import jwtDecode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { signOut, useSession } from 'next-auth/react';
 import styles from '../styles/workspace.module.css';
-import { getToken } from '../helpers';
+import { getToken, storeToken } from '../helpers';
 import { IWorkspace, IWorkspaceCreate, IWorkspaceCreateResponse, IWorkspaceResponse } from '../interfaces';
 import { ITokenData } from '../interfaces/Jwt';
 import Workpace from '../components/Workspace';
@@ -16,6 +17,7 @@ function Workspace() {
   const [isCreate, setIsCreate] = useState<boolean>(false);
   const [limitCreate, setLimitCreate] = useState<number>(0);
   const [workspaceName, setWorkspaceName] = useState<string>('');
+  const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -76,6 +78,11 @@ function Workspace() {
     }
   };
 
+  const handleLogout = () => {
+    storeToken('');
+    signOut({ callbackUrl: 'http://localhost:3000' });
+  };
+
   return (
     <>
       {
@@ -84,6 +91,11 @@ function Workspace() {
             <input type="text" onChange={ ({ target }) => setWorkspaceName(target.value) } />
             <button onClick={ createWorkspace } type="button">Criar Workpace</button>
           </>
+        )
+      }
+      {
+        session && (
+          <button type="button" onClick={ handleLogout }>Sign out</button>
         )
       }
       <div className={ styles.mainContainerWorkspace }>
@@ -102,6 +114,8 @@ function Workspace() {
             ))
           }
         </main>
+        {
+  }
       </div>
     </>
   );
