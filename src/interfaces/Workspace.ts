@@ -2,8 +2,8 @@ import React from 'react';
 import { IColumn } from './Column';
 
 export interface IWorkspace {
-  id: number;
-  ownerId: number;
+  id: string;
+  ownerId: string;
   name: string;
 }
 export interface IWorkspaceId extends IWorkspace {
@@ -21,17 +21,17 @@ export interface IWorkspaceIdResponse {
 export interface IWorkspaceCreate {
   data: {
     workspaceName: string;
-    id: number;
-  }
+    id: string;
+  };
 }
 
 export interface IWorkspaceProp {
   name: string;
-  id: number;
-  setWorkspaces: React.Dispatch<React.SetStateAction<IWorkspace[]>>
+  id: string;
+  setWorkspaces: React.Dispatch<React.SetStateAction<IWorkspace[]>>;
 }
 
 export interface IWorkspaceCreateResponse {
   workspaceName: string;
-  userId: number;
+  userId: string;
 }
