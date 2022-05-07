@@ -2,6 +2,7 @@ export * from './createCard';
 export * from './createColumn';
 export * from './deleteCard';
 export * from './deleteColumn';
+export * from './deleteWorkspace';
 export * from './editCardContent';
 export * from './editColumnName';
 export * from './getAllWorkspaces';
