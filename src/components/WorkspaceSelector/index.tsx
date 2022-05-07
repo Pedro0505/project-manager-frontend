@@ -4,13 +4,20 @@ import WorkspaceCard from './components/WorkspaceCard';
 
 interface PropTypes {
   allWorkspaces: IWorkspace[];
+  deleteWorkspace: (workspaceId: string) => void;
 }
 
-function WorkspaceSelector({ allWorkspaces }: PropTypes) {
+const WORKSPACES_LIMIT = 3;
+
+function WorkspaceSelector({ allWorkspaces, deleteWorkspace }: PropTypes) {
   return (
     <section>
       {allWorkspaces.map((workspace) => (
-        <WorkspaceCard key={workspace.id} workspaceData={workspace} />
+        <WorkspaceCard
+          key={workspace.id}
+          workspaceData={workspace}
+          deleteWorkspace={deleteWorkspace}
+        />
       ))}
     </section>
   );

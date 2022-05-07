@@ -6,8 +6,6 @@ import { IWorkspace } from '../../interfaces';
 import * as api from '../../api';
 import WorkspaceSelector from '../../components/WorkspaceSelector';
 
-const WORKSPACES_LIMIT = 3;
-
 function Workspace() {
   const [workspaces, setWorkspaces] = useState<IWorkspace[]>([]);
   const { data: session } = useSession();
@@ -29,6 +27,12 @@ function Workspace() {
     signOut({ callbackUrl: 'http://localhost:3000' });
   };
 
+  const deleteWorkspace = async (workspaceId: string) => {
+    await api.deleteWorkspace(workspaceId);
+
+    setWorkspaces((prev) => prev.filter(({ id }) => id !== workspaceId));
+  };
+
   return (
     <main>
       {session && (
@@ -36,7 +40,7 @@ function Workspace() {
           Sign out
         </button>
       )}
-      <WorkspaceSelector allWorkspaces={workspaces} />
+      <WorkspaceSelector allWorkspaces={workspaces} deleteWorkspace={deleteWorkspace} />
     </main>
   );
 }
