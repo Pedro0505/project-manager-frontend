@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken } from '../token';
+import { getToken } from '../helpers/token';
 
 const ENDPOINT = `${process.env.NEXT_PUBLIC_API_URL}/column`;
 

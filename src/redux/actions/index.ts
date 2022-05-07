@@ -1,6 +1,6 @@
 import { DropResult } from 'react-beautiful-dnd';
 import { Dispatch } from 'redux';
-import * as fetch from '../../helpers/fetch';
+import * as fetch from '../../api';
 import { IBoardData, ICard, ICardCreateRequest, IColumn } from '../../interfaces';
 import ActionTypes from './actionTypes';
 import { IDeleteCard, IDeleteColumn, IEditCard, IEditColumn, IInitialFetch } from './interfaces';

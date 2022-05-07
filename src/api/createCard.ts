@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { ICard, ICardCreateRequest } from '../../interfaces';
-import { getToken } from '../token';
+import { ICard, ICardCreateRequest } from '../interfaces';
+import { getToken } from '../helpers/token';
 
 export const createCard = async (cardData: ICardCreateRequest): Promise<ICard> => {
   const ENDPOINT = `${process.env.NEXT_PUBLIC_API_URL}/card`;

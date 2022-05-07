@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { IWorkspace, IWorkspaceIdResponse } from '../../interfaces';
-import { getToken } from '../token';
+import { IWorkspace, IWorkspaceIdResponse } from '../interfaces';
+import { getToken } from '../helpers/token';
 
 export const getWorkspace = async (workspaceId: string): Promise<IWorkspace> => {
   const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/workspace/${workspaceId}`;

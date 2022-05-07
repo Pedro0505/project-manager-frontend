@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { IColumnCreateRequest, IColumnCreateResponse } from '../../interfaces';
-import { getToken } from '../token';
+import { IColumnCreateRequest, IColumnCreateResponse } from '../interfaces';
+import { getToken } from '../helpers/token';
 
 export const createColumn = async (
   columnData: IColumnCreateRequest,
