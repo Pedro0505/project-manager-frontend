@@ -5,12 +5,12 @@ import jwtDecode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
-import styles from '../styles/workspace.module.css';
-import { getToken, storeToken } from '../helpers';
-import { IWorkspace, IWorkspaceCreate, IWorkspaceCreateResponse, IWorkspaceResponse } from '../interfaces';
-import { ITokenData } from '../interfaces/Jwt';
-import Workpace from '../components/Workspace';
-import handleAxios from '../helpers/handleAxios';
+import styles from '../../styles/workspace.module.css';
+import { getToken, storeToken } from '../../helpers';
+import { IWorkspace, IWorkspaceCreate, IWorkspaceCreateResponse, IWorkspaceResponse } from '../../interfaces';
+import { ITokenData } from '../../interfaces/Jwt';
+import Workpace from '../../components/Workspace';
+import handleAxios from '../../helpers/handleAxios';
 
 function Workspace() {
   const [workspaces, setWorkspaces] = useState<IWorkspace[]>([]);
