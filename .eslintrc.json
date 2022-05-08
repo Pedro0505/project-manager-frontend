@@ -29,6 +29,7 @@
     "@typescript-eslint/no-unused-vars": ["error"],
     "react/jsx-props-no-spreading": "off",
     "default-param-last": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "react/no-array-index-key": "off"
   }
 }
