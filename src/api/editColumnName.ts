@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken } from '../token';
+import { getToken } from '../helpers/token';
 
 export const editColumnName = async (id: string, newTitle: string) => {
   const ENDPOINT = `${process.env.NEXT_PUBLIC_API_URL}/column/${id}`;

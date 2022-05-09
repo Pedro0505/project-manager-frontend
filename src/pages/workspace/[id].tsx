@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import Board from '../../components/Board';
-import { getWorkspace } from '../../helpers/fetch';
+import { getWorkspace } from '../../api';
 import { IWorkspace } from '../../interfaces';
 import store from '../../redux/store';
 

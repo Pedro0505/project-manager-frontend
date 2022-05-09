@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { ICard } from '../../interfaces';
-import { getToken } from '../token';
+import { ICard } from '../interfaces';
+import { getToken } from '../helpers/token';
 
 export const editCardContent = async (editedCard: ICard): Promise<ICard> => {
   const ENDPOINT = `${process.env.NEXT_PUBLIC_API_URL}/card/${editedCard.id}`;

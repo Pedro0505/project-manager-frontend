@@ -72,12 +72,26 @@
   background-color: #333333;
   justify-content: center;
   padding: 12px;
-  text-decoration: none;
   color: white;
   border-radius: 5px;
   margin-top: 50px;
+  cursor: pointer;
+  border: none;
 }
 
-.githubLogin p {
+.githubLogin p, 
+.googleLogin p  {
   margin-left: 10px;
+}
+
+.googleLogin {
+  display: flex;
+  background-color: #ffffff;
+  justify-content: center;
+  padding: 12px;
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+  margin-top: 20px;
+  cursor: pointer;
+  border: 1px solid black;
 }
