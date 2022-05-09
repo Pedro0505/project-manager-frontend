@@ -39,6 +39,18 @@ function Workspace() {
     setWorkspaces((prev) => [...prev, newWorkspace]);
   };
 
+  const editWorkspace = async (workspaceId: string, newName: string) => {
+    await api.editWorkspace(workspaceId, newName);
+
+    setWorkspaces((prev) => {
+      const clone = [...prev];
+      const indexToEdit = prev.findIndex(({ id }) => id === workspaceId);
+      clone[indexToEdit].name = newName;
+
+      return clone;
+    });
+  };
+
   return (
     <main>
       {session && (
@@ -50,6 +62,7 @@ function Workspace() {
         allWorkspaces={workspaces}
         deleteWorkspace={deleteWorkspace}
         createWorkspace={createWorkspace}
+        editWorkspace={editWorkspace}
       />
     </main>
   );

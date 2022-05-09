@@ -8,11 +8,17 @@ interface PropTypes {
   allWorkspaces: IWorkspace[];
   deleteWorkspace: (workspaceId: string) => void;
   createWorkspace: (workspaceName: string) => void;
+  editWorkspace: (workspaceId: string, newName: string) => void;
 }
 
 const WORKSPACES_LIMIT = 3;
 
-function WorkspaceSelector({ allWorkspaces, deleteWorkspace, createWorkspace }: PropTypes) {
+function WorkspaceSelector({
+  allWorkspaces,
+  deleteWorkspace,
+  createWorkspace,
+  editWorkspace,
+}: PropTypes) {
   return (
     <section className={styles.workspaceSelector}>
       {allWorkspaces.map((workspace) => (
@@ -20,6 +26,7 @@ function WorkspaceSelector({ allWorkspaces, deleteWorkspace, createWorkspace }: 
           key={workspace.id}
           workspaceData={workspace}
           deleteWorkspace={deleteWorkspace}
+          editWorkspace={editWorkspace}
         />
       ))}
       {/* renderiza o botão de adicionar workspaces até ter 3 componentes em tela */}
