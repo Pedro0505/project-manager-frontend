@@ -1,5 +1,6 @@
 export * from './createCard';
 export * from './createColumn';
+export * from './createWorkspace';
 export * from './deleteCard';
 export * from './deleteColumn';
 export * from './deleteWorkspace';
