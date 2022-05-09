@@ -6,6 +6,7 @@ export * from './deleteColumn';
 export * from './deleteWorkspace';
 export * from './editCardContent';
 export * from './editColumnName';
+export * from './editWorkspace';
 export * from './getAllWorkspaces';
 export * from './getBoardData';
 export * from './getWorkspace';
