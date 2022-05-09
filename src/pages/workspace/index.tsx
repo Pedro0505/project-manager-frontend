@@ -33,6 +33,12 @@ function Workspace() {
     setWorkspaces((prev) => prev.filter(({ id }) => id !== workspaceId));
   };
 
+  const createWorkspace = async (workspaceName: string) => {
+    const newWorkspace = await api.createWorkspace(workspaceName);
+
+    setWorkspaces((prev) => [...prev, newWorkspace]);
+  };
+
   return (
     <main>
       {session && (
@@ -40,7 +46,11 @@ function Workspace() {
           Sign out
         </button>
       )}
-      <WorkspaceSelector allWorkspaces={workspaces} deleteWorkspace={deleteWorkspace} />
+      <WorkspaceSelector
+        allWorkspaces={workspaces}
+        deleteWorkspace={deleteWorkspace}
+        createWorkspace={createWorkspace}
+      />
     </main>
   );
 }

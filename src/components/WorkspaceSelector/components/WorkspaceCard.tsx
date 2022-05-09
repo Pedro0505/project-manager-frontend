@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import React, { FocusEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { MdDelete, MdEdit, MdWarning } from 'react-icons/md';
-import { toDataTestId } from '../../../helpers';
 import { IWorkspace } from '../../../interfaces';
 import styles from '../styles.module.css';
 
@@ -58,7 +57,6 @@ function WorkspaceCard({ workspaceData: { id, name }, deleteWorkspace }: PropTyp
         <>
           <button
             type="button"
-            data-testid={`delete-workspace-card-${toDataTestId(newName)}`}
             className={styles.deleteButton}
             onClick={deleteWorkspaceCard}
           >
@@ -66,7 +64,6 @@ function WorkspaceCard({ workspaceData: { id, name }, deleteWorkspace }: PropTyp
           </button>
           <button
             className={styles.editButton}
-            data-testid={`edit-workspace-card-${toDataTestId(newName)}`}
             type="button"
             onClick={() => setIsEditing(true)}
           >
