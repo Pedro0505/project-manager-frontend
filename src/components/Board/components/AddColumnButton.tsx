@@ -69,7 +69,7 @@ function AddColumn({ workspaceId }: PropTypes) {
       ) : (
         <button className={styles.addColumnButton} type="button" onClick={() => setIsEditing(true)}>
           <MdAdd size="18px" />
-          <span>Adicionar card</span>
+          <span>Adicionar Lista</span>
         </button>
       )}
     </div>

@@ -1,16 +1,16 @@
 import Link from 'next/link';
-import React, { FocusEvent, KeyboardEvent, useEffect, useState } from 'react';
+import React, { KeyboardEvent, useEffect, useState } from 'react';
 import { MdDelete, MdEdit, MdWarning } from 'react-icons/md';
-import { toDataTestId } from '../../../helpers';
 import { IWorkspace } from '../../../interfaces';
 import styles from '../styles.module.css';
 
 interface PropTypes {
   workspaceData: IWorkspace;
   deleteWorkspace: (workspaceId: string) => void;
+  editWorkspace: (workspaceId: string, newName: string) => void;
 }
 
-function WorkspaceCard({ workspaceData: { id, name }, deleteWorkspace }: PropTypes) {
+function WorkspaceCard({ workspaceData: { id, name }, deleteWorkspace, editWorkspace }: PropTypes) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [newName, setNewName] = useState<string>(name);
   const [canDelete, setCanDelete] = useState<boolean>(false);
@@ -27,49 +27,43 @@ function WorkspaceCard({ workspaceData: { id, name }, deleteWorkspace }: PropTyp
     setCanDelete(true);
   };
 
-  // const editWorkspaceCard = async () => {
-  //   dispatch(actions.editCard({ id, columnId, content: newContent }));
+  const editWorkspaceCard = async () => {
+    editWorkspace(id, newName);
 
-  //   setNewName(name);
-  //   setIsEditing(false);
-  // };
+    setNewName(newName);
+    setIsEditing(false);
+  };
 
   const cancelEditWorkspaceCard = () => {
     setNewName(name);
     setIsEditing(false);
   };
 
-  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
-    if (event.relatedTarget?.id === 'edit-card-confirm-button') return;
-
+  const handleBlur = () => {
     cancelEditWorkspaceCard();
   };
 
   const handleKeyboard = (event: KeyboardEvent<HTMLInputElement>) => {
-    // if (event.key === 'Enter') editWorkspaceCard();
+    if (event.key === 'Enter') editWorkspaceCard();
     if (event.key === 'Escape') cancelEditWorkspaceCard();
   };
 
   return (
     <div>
       {isEditing ? (
-        <input type="text" onBlur={handleBlur} onKeyDown={handleKeyboard} />
+        <input
+          type="text"
+          value={newName}
+          onChange={({ target }) => setNewName(target.value)}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyboard}
+        />
       ) : (
         <>
-          <button
-            type="button"
-            data-testid={`delete-workspace-card-${toDataTestId(newName)}`}
-            className={styles.deleteButton}
-            onClick={deleteWorkspaceCard}
-          >
+          <button type="button" className={styles.deleteButton} onClick={deleteWorkspaceCard}>
             {canDelete ? <MdWarning size="1rem" /> : <MdDelete size="1rem" />}
           </button>
-          <button
-            className={styles.editButton}
-            data-testid={`edit-workspace-card-${toDataTestId(newName)}`}
-            type="button"
-            onClick={() => setIsEditing(true)}
-          >
+          <button className={styles.editButton} type="button" onClick={() => setIsEditing(true)}>
             <MdEdit />
           </button>
           <Link href={`/workspace/${id}`}>
