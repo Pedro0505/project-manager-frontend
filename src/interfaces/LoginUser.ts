@@ -15,3 +15,8 @@ export interface IUser {
   lastName: string;
   uuid?: string;
 }
+
+export interface IUserAuth0 {
+  email: string;
+  uuid?: string;
+}

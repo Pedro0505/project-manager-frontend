@@ -4,12 +4,12 @@ import { v4 as uuid } from 'uuid';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { storeToken } from '../helpers';
-import { ILoginRequest, ILoginResponse, IRegisterUserRequest, IRegisterUserResponse, IUser } from '../interfaces';
+import { ILoginRequest, ILoginResponse, IRegisterUserRequest, IRegisterUserResponse, IUserAuth0 } from '../interfaces';
 import handleAxios from '../helpers/handleAxios';
 
 const useLogin = () => {
   const { data: session } = useSession();
-  const [checkUser, setCheckUser] = useState<IUser | boolean>();
+  const [checkUser, setCheckUser] = useState<IUserAuth0 | boolean>();
   const router = useRouter();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const useLogin = () => {
         try {
           const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/user/search?q=${auth0Email}`;
 
-          const data = await handleAxios<IUser, AxiosRequestConfig>('get', endpoint);
+          const data = await handleAxios<IUserAuth0, AxiosRequestConfig>('get', endpoint);
 
           setCheckUser(data);
         } catch (error) {
@@ -33,7 +33,7 @@ const useLogin = () => {
         const loginEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/user/login`;
 
         const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/user/search?q=${userEmail}`;
-        const data = await handleAxios<IUser, AxiosRequestConfig>('get', endpoint);
+        const data = await handleAxios<IUserAuth0, AxiosRequestConfig>('get', endpoint);
 
         const user = { email: userEmail, password: data.uuid as string };
 
