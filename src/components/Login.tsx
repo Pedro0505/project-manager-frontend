@@ -10,7 +10,6 @@ import styles from '../styles/login.module.css';
 import { ILoginRequest, ILoginResponse } from '../interfaces';
 import errorList from '../helpers/errorList';
 import handleAxios from '../helpers/handleAxios';
-import useLogin from '../hooks/useLogin';
 
 function Login() {
   const [email, setEmail] = useState<string>('');
@@ -18,7 +17,6 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [errorExist, setErrorExist] = useState<boolean>(false);
   const router = useRouter();
-  useLogin();
 
   const handleError = (error: keyof typeof errorList) => {
     const message = errorList[error];
@@ -81,7 +79,9 @@ function Login() {
       <button
         type="button"
         className={ styles.githubLogin }
-        onClick={() => signIn('github')}
+        onClick={() => signIn('github', {
+          callbackUrl: 'http://localhost:3000/authenticate',
+        })}
       >
         <AiFillGithub />
         <p>Entre com o GitHub</p>
