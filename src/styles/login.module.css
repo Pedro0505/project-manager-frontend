@@ -1,7 +1,13 @@
+@font-face {
+  font-family: logoFont;
+  src: url('../../public/fonts/Dancing_Script/static/DancingScript-Medium.ttf');
+}
+
 .formRegister {
   display: flex;
   flex-direction: column;
-  padding: 150px 50px 150px 0;
+  padding-right: 48px;
+  margin-right: 58px;
   border-right: 1px solid rgb(186, 186, 186);
 }
 
@@ -9,7 +15,6 @@
   width: 350px;
   display: flex;
   flex-direction: column;
-  padding-left: 50px;
   padding-bottom: 20px;
 }
 
@@ -33,12 +38,57 @@
   flex-direction: column;
 }
 
-.containerRegiterLogin {
+.loadingRegisterLogin {
+  pointer-events: none;
+  background-color: #e9e9e9;
+  padding: 20px;
+  border-radius: 30px;
+}
+
+.mainContainerRegisterLogin {
+  background-image: url(https://wallpaperaccess.com/full/58695.png);
+  background-size: cover;
   display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background-repeat: no-repeat;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.containerRegisterLogin {
+  display: flex;
+  background-color: #e9e9e9;
+  align-items: center;
+  padding: 30px;
+  border-radius: 30px;
+  box-shadow: -1px 14px 20px 11px #00000070;
+  flex-direction: column;
+}
+
+.logoRegisterLogin {
+  font-family: 'logoFont';
+  font-size: 40px;
+  pointer-events: none;
+}
+
+.logoRegisterLogin p {
+  pointer-events: none;
+  background-color: #1c4b90;
+  color: white;
+  padding: 10px 30px;
+  border-radius: 30px;
+  margin-bottom: 10px;
+  box-shadow: inset black 1px 1px 16px;
+}
+
+.registerLogin {
+  display: flex;
+  flex-direction: row;
 }
 
 .inputName {

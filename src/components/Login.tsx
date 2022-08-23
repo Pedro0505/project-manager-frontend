@@ -81,7 +81,10 @@ function Login() {
       <button
         type="button"
         className={ styles.githubLogin }
-        onClick={() => signIn('github')}
+        onClick={() => {
+          console.log(3);
+          signIn('github');
+        }}
       >
         <AiFillGithub />
         <p>Entre com o GitHub</p>

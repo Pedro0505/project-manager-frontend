@@ -1,0 +1,64 @@
+.workspace,
+.mainBoardContainer {
+    background-image: url(https://wallpaperaccess.com/full/58695.png);
+    /* padding: 30px; */
+    background-size: cover;
+    display: flex;
+    /* background-color: antiquewhite; */
+    height: 100vh;
+}
+
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    /* Set the navbar to fixed position */
+    top: 0;
+    /* Position the navbar at the top of the page */
+    width: 100%;
+    /* Full width */
+    box-shadow: 1px 1px 11px 0px #00000087;
+}
+
+/* Links inside the navbar */
+.navbar button {
+    background-color: #e9e9e9;
+    ;
+    float: left;
+    display: block;
+    color: #01010185;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+/* Change background on mouse-over */
+.navbar button:hover {
+    background: #e9e9e9;
+    color: black;
+}
+
+@font-face {
+    font-family: logoFont;
+    src: url('../../public/fonts/Dancing_Script/static/DancingScript-Medium.ttf');
+  }
+
+.logoRegisterLogin {
+    font-family: 'logoFont';
+    font-size: 40px;
+    pointer-events: none;
+    position: fixed;
+    right: 48%;
+    top: 10px;
+}
+
+.logoRegisterLogin p {
+    pointer-events: none;
+    font-size: 15px;
+    background-color: #1c4b90;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 30px;
+    margin-bottom: 10px;
+    box-shadow: inset black 1px 1px 16px;
+}

@@ -19,6 +19,14 @@ function WorkspaceSelector({
   createWorkspace,
   editWorkspace,
 }: PropTypes) {
+  React.useEffect(() => {
+    window.addEventListener('mousedown', () => console.log('AQUI!!! bob'));
+
+    // cleanup this component
+    return () => {
+      window.removeEventListener('mousedown', () => console.log('AQUI!!! bob'));
+    };
+  }, []);
   return (
     <section className={styles.workspaceSelector}>
       {allWorkspaces.map((workspace) => (

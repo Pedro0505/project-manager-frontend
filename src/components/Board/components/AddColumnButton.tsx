@@ -58,10 +58,10 @@ function AddColumn({ workspaceId }: PropTypes) {
             onKeyDown={handleKeyboard}
           />
           <div>
-            <button type="button" id="create-column-confirm-button" onClick={handleCreateColumn}>
+            <button type="button" id="create-column-confirm-button" className={styles.createColumnConfirmButton} onClick={handleCreateColumn}>
               Confirmar
             </button>
-            <button type="button" onClick={handleCancel}>
+            <button id="create-column-cancel-button" type="button" className={styles.createColumnCancelButton} onClick={handleCancel}>
               <MdOutlineClose />
             </button>
           </div>

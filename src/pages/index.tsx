@@ -16,13 +16,18 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={ styles.containerRegiterLogin }>
+      <main className={styles.mainContainerRegisterLogin}>
         {
-          status === 'loading' ? <h1>Loading...</h1> : (
-            <>
-              <Register />
-              <Login />
-            </>
+          (status === 'loading') ? <h1 className={styles.loadingRegisterLogin}>Loading...</h1> : (
+            <div className={styles.containerRegisterLogin}>
+              <div className={styles.logoRegisterLogin}>
+                <p>Mape</p>
+              </div>
+              <div className={styles.registerLogin}>
+                <Register />
+                <Login />
+              </div>
+            </div>
           )
         }
       </main>
