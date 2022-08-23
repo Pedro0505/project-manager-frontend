@@ -80,7 +80,7 @@ function Login() {
         type="button"
         className={ styles.githubLogin }
         onClick={() => signIn('github', {
-          callbackUrl: 'http://localhost:3000/authenticate',
+          callbackUrl: process.env.NEXT_PUBLIC_HOST_URL ? `${process.env.NEXT_PUBLIC_HOST_URL}/authenticate` : 'http://localhost:3000/authenticate',
         })}
       >
         <AiFillGithub />
@@ -88,7 +88,9 @@ function Login() {
       </button>
       <button
         type="button"
-        onClick={() => signIn('google')}
+        onClick={() => signIn('google', {
+          callbackUrl: process.env.NEXT_PUBLIC_HOST_URL ? `${process.env.NEXT_PUBLIC_HOST_URL}/authenticate` : 'http://localhost:3000/authenticate',
+        })}
         className={ styles.googleLogin }
       >
         <FcGoogle />
