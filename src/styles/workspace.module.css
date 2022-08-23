@@ -1,11 +1,17 @@
 .workspace,
 .mainBoardContainer {
     background-image: url(https://wallpaperaccess.com/full/58695.png);
+    /* background-color: darkgray; */
     /* padding: 30px; */
     background-size: cover;
     display: flex;
     /* background-color: antiquewhite; */
     height: 100vh;
+    width: fit-content;
+    min-width: 100%;
+    /* filter: blur(8px); */
+    /* backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px); */
 }
 
 .navbar {
@@ -41,7 +47,7 @@
 @font-face {
     font-family: logoFont;
     src: url('../../public/fonts/Dancing_Script/static/DancingScript-Medium.ttf');
-  }
+}
 
 .logoRegisterLogin {
     font-family: 'logoFont';
