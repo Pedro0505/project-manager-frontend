@@ -15,7 +15,6 @@ function Workspace() {
 
   useEffect(() => {
     console.log('Fetching workspaces');
-    console.log(session);
 
     const fetchWorkspaces = async () => {
       const allWorkspaces = await api.getAllWorkspaces();
