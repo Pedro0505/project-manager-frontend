@@ -3,7 +3,7 @@
     background-image: url(https://wallpaperaccess.com/full/58695.png);
     /* background-color: darkgray; */
     /* padding: 30px; */
-    background-size: cover;
+    background-size: auto;
     display: flex;
     /* background-color: antiquewhite; */
     height: 100vh;
