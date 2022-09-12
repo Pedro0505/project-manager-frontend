@@ -1,14 +1,17 @@
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { storeToken } from '../../helpers';
 import { IWorkspace } from '../../interfaces';
 import * as api from '../../api';
 import WorkspaceSelector from '../../components/WorkspaceSelector';
+import styles from '../../styles/workspace.module.css';
 
 function Workspace() {
   const [workspaces, setWorkspaces] = useState<IWorkspace[]>([]);
   const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     console.log('Fetching workspaces');
@@ -22,9 +25,14 @@ function Workspace() {
     fetchWorkspaces();
   }, []);
 
-  const handleLogout = () => {
+  const handleLogoutAuth0 = () => {
     storeToken('');
     signOut({ callbackUrl: 'http://localhost:3000' });
+  };
+
+  const handleLogoutNoAuth = () => {
+    storeToken('');
+    router.push('/');
   };
 
   const deleteWorkspace = async (workspaceId: string) => {
@@ -52,12 +60,21 @@ function Workspace() {
   };
 
   return (
-    <main>
-      {session && (
-        <button type="button" onClick={handleLogout}>
-          Sign out
-        </button>
-      )}
+    <main className={styles.workspace}>
+      <div className={styles.navbar}>
+        {session ? (
+          <button type="button" onClick={handleLogoutAuth0}>
+            Sign out
+          </button>
+        ) : (
+          <button type="button" onClick={handleLogoutNoAuth}>
+            Sign out
+          </button>
+        )}
+        <div className={styles.logoRegisterLogin}>
+          <p>Mape</p>
+        </div>
+      </div>
       <WorkspaceSelector
         allWorkspaces={workspaces}
         deleteWorkspace={deleteWorkspace}

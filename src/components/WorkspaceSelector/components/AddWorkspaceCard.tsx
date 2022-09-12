@@ -1,5 +1,6 @@
 import React, { KeyboardEvent, useState } from 'react';
-import { MdAdd } from 'react-icons/md';
+// import { MdAdd } from 'react-icons/md';
+import styles from '../styles.module.css';
 
 interface PropTypes {
   createWorkspace: (workspaceName: string) => void;
@@ -31,9 +32,10 @@ function AddWorkspaceCard({ createWorkspace }: PropTypes) {
   };
 
   return (
-    <div>
+    <div className={styles.inputAndDeleteEditButtons}>
       {isCreating ? (
         <input
+          className={styles.inputButton}
           type="text"
           value={name}
           onChange={({ target }) => setName(target.value)}
@@ -41,8 +43,13 @@ function AddWorkspaceCard({ createWorkspace }: PropTypes) {
           onKeyDown={handleKeyboard}
         />
       ) : (
-        <button type="button" onClick={() => setIsCreating(true)}>
-          <MdAdd />
+        <button
+          className={styles.inputButton}
+          type="button"
+          onClick={() => setIsCreating(true)}
+        >
+          Add New
+          WORKSPACE
         </button>
       )}
     </div>

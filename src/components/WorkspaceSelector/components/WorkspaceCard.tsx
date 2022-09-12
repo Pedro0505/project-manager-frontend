@@ -49,27 +49,34 @@ function WorkspaceCard({ workspaceData: { id, name }, deleteWorkspace, editWorks
   };
 
   return (
-    <div>
+    <div className={styles.inputAndDeleteEditButtons}>
       {isEditing ? (
-        <input
-          type="text"
-          value={newName}
-          onChange={({ target }) => setNewName(target.value)}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyboard}
-        />
+        <div className={styles.editInput}>
+          <input
+            id="creep"
+            type="text"
+            value={newName}
+            onChange={({ target }) => setNewName(target.value)}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyboard}
+          />
+        </div>
       ) : (
-        <>
-          <button type="button" className={styles.deleteButton} onClick={deleteWorkspaceCard}>
-            {canDelete ? <MdWarning size="1rem" /> : <MdDelete size="1rem" />}
-          </button>
-          <button className={styles.editButton} type="button" onClick={() => setIsEditing(true)}>
-            <MdEdit />
-          </button>
-          <Link href={`/workspace/${id}`}>
-            <a className={styles.workspaceCard}>{name}</a>
-          </Link>
-        </>
+        <div className={styles.inputAndDeleteEditButtons}>
+          <div className={styles.deleteEditButtons}>
+            <button type="button" className={styles.deleteButton} onClick={deleteWorkspaceCard}>
+              {canDelete ? <MdWarning size="1rem" /> : <MdDelete size="1rem" />}
+            </button>
+            <button className={styles.editButton} type="button" onClick={() => setIsEditing(true)}>
+              <MdEdit />
+            </button>
+          </div>
+          <div className={styles.inputButton}>
+            <Link href={`/workspace/${id}`}>
+              <a className={styles.workspaceCard}>{name}</a>
+            </Link>
+          </div>
+        </div>
       )}
     </div>
   );

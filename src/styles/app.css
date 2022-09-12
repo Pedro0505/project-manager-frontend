@@ -18,3 +18,8 @@ h5,
 h6 {
   font-family: 'Roboto', sans-serif;
 }
+
+body {
+  overflow-x: auto;
+  overflow-y: auto;
+}

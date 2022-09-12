@@ -38,19 +38,21 @@ function Board({ workspaceId }: PropTypes) {
 
   return (
     <div className={styles.boardContainer}>
-      <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-        <Droppable droppableId="all-columns" direction="horizontal" type="COLUMN">
-          {(provided) => (
-            <div className={styles.board} {...provided.droppableProps} ref={provided.innerRef}>
-              {boardData.columnsOrder.map((columnId, index) => (
-                <Column key={columnId} columnData={boardData.columns[columnId]} index={index} />
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <AddColumn workspaceId={workspaceId} />
+      <div className={styles.insideBoardContainer}>
+        <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+          <Droppable droppableId="all-columns" direction="horizontal" type="COLUMN">
+            {(provided) => (
+              <div className={styles.board} {...provided.droppableProps} ref={provided.innerRef}>
+                {boardData.columnsOrder.map((columnId, index) => (
+                  <Column key={columnId} columnData={boardData.columns[columnId]} index={index} />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        <AddColumn workspaceId={workspaceId} />
+      </div>
     </div>
   );
 }

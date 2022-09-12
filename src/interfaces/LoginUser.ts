@@ -14,6 +14,7 @@ export interface IUser {
   firstName: string;
   lastName: string;
   uuid?: string;
+  logging: boolean;
 }
 
 export interface IUserAuth0 {
