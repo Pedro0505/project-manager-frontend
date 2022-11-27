@@ -4,7 +4,7 @@ const errorList = {
   'wrong password': 'A senha está incorreta',
   '"email" is not allowed to be empty': 'O email não pode ser vazio',
   '"password" is not allowed to be empty': 'A senha não pode ser vazia',
-  '"email" must be a valid email': 'O email deve ter o formato jonh@doe.com',
+  '"email" must be a valid email': 'O email deve ter o formato john@doe.com',
 };
 
 export default errorList;
